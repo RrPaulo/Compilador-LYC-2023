@@ -30,6 +30,8 @@ PC			")"
 
 %%
 
+
+
 {CTE}			{printf("\nConstante: %s\n", yytext);return CTE;}
 {ID}			{printf("\nIdentificador: %s\n", yytext);return ID;}
 {OP_SUM}		{printf("\nSuma: %s\n", yytext);return OP_SUM;}
