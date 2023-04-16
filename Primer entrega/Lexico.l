@@ -37,6 +37,8 @@ PC			    ")"
 LA              "{"
 LC              "}"
 COMILLA         ["]
+DOS_PUNTOS      [:]
+COMA            [,]
 COMENTARIO_A    "*""-"
 COMENTARIO_C    "-""*"
 COMENTARIO_I    {COMENTARIO_A}(.)*{COMENTARIO_C}
@@ -115,10 +117,11 @@ FIB             "FIB"
 " "             		
 "\r\n"
 {COMILLA}       {printf("\nComilla: %s\n", yytext);return COMILLA;}
+{DOS_PUNTOS}    {printf("\nDos Puntos: %s\n", yytext);return DOS_PUNTOS;}
+{COMA}          {printf("\nComa: %s\n", yytext);return COMA;}
 {COMENTARIO_A}  {;}
 {COMENTARIO_C}  {;}
 {COMENTARIO_I}  {;}
-{COMILLA}       {printf("\nComilla: %s\n", yytext);return COMILLA;}
 {OP_MEN}        {printf("\nComilla: %s\n", yytext);return OP_MEN;}
 {OP_MAY}        {printf("\nComilla: %s\n", yytext);return OP_MAY;}
 {OP_COMP}       {printf("\nComilla: %s\n", yytext);return OP_COMP;}

@@ -25,6 +25,8 @@ FILE  *yyin;
 %token LA
 %token LC
 %token COMILLA
+%token DOS_PUNTOS
+%token COMA
 %token COMENTARIO_A
 %token COMENTARIO_C
 %token COMENTARIO_I
@@ -49,48 +51,64 @@ FILE  *yyin;
 
 %%
 programa:
-    sentencia;
-    |programa sentencia;
+        sentencia
+        |programa sentencia;
 
 sentencia:  	   
-	asignacion  {printf(" FIN\n");} ;
-    |read       {printf(" FIN\n");} ;
-    |write      {printf(" FIN\n");} ;
-    |ciclo      {printf(" FIN\n");} ;
-    |if         {printf(" FIN\n");} ;
+	asignacion 
+        |declaracion
+        |read       
+        |write       
+        |ciclo      
+        |if ;
 
 asignacion: 
           ID OP_AS expresion {printf("    ID = Expresion es ASIGNACION\n");}
 	  ;
 
+declaracion: 
+                INIT LA lista_declaracion LC {printf("Sintactico --> DECLARACION\n");};
+
+lista_declaracion:  
+                    lista_declaracion lista_id DOS_PUNTOS tipo
+                    |lista_id DOS_PUNTOS tipo;
+
+lista_id: 
+          lista_id COMA ID
+          |ID;
+
+tipo: 
+      INT
+      |FLOAT
+      |STRING;
 
 read:
-          READ PA ID PC;
+          READ PA ID PC {printf("Sintactico --> READ\n");};
 
 write:
-          WRITE PA ID PC;
-          |WRITE PA CONST_STRING PC;
+          WRITE PA ID PC {printf("Sintactico --> WRITE\n");}
+          |WRITE PA CONST_STRING PC {printf("Sintactico --> WRITE\n");};
 
 ciclo: 
-        CICLO PA condicion PC LA programa LC ;
+        CICLO PA condicion PC LA programa LC {printf("Sintactico --> CICLO\n");};
 
 if:
-        IF PA condicion PC LA programa LC;
-        |IF PA condicion PC LA programa LC ELSE LA programa LC;
+        IF PA condicion PC LA programa LC {printf("Sintactico --> IF\n");}
+        |IF PA condicion PC LA programa LC ELSE LA programa LC {printf("Sintactico --> IF\n");};
 
 condicion:
-        comparacion;
-        |condicion AND comparacion;
+        comparacion
+        |condicion AND comparacion
         |condicion OR comparacion;
 
 comparacion:
         expresion comparador expresion;
 
 comparador:
-        OP_MEN;
-        |OP_MAY;
-        |OP_COMP;
-        |OP_MEN_IGU;
+        OP_MEN
+        |OP_MA
+        |OP_COMP
+        |OP_MEN_IGU
         |OP_MAY_IGU;
 
 
@@ -111,8 +129,12 @@ factor:
       | CTE             {printf("   CTE es Factor\n");}
       | CONST_REAL      {printf("   CTE_R es Factor\n");}
       | CONST_STRING    {printf("   CTE_S es Factor\n");}
-	  | PA expresion PC {printf(" Expresion entre parentesis es Factor\n");}
+      | fibonacci       {printf("   Fibonacci es Factor\n");}
+      | PA expresion PC {printf(" Expresion entre parentesis es Factor\n");}
      	;
+
+fibonacci: FIB PA CTE PC {printf("Sintactico --> Fibonacci\n");};
+
 %%
 
 
