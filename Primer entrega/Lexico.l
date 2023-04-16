@@ -27,7 +27,7 @@ CTE		        {DIGITO}+
 CONST_REAL      {DIGITO}+"."{DIGITO}+|{DIGITO}+"."|"."{DIGITO}+
 CONST_STRING    {COMILLA}{1}(.)*{COMILLA}{1}
 ID			    {LETRA}({LETRA}|{DIGITO})*
-OP_AS   		":""="
+OP_AS   		"="
 OP_SUM		    "+"
 OP_MUL          "*"
 OP_RES		    "-"
@@ -43,7 +43,6 @@ COMENTARIO_I    {COMENTARIO_A}(.)*{COMENTARIO_C}
 CICLO           "ciclo"|"CICLO"
 IF              "IF"|"If"|"if"
 ELSE            "else"|"ELSE"|"Else"
-ASIGNACION      "="
 INT             "Int"|"INT"
 FLOAT           "Float"|"FLOAT"
 STRING          "String"|"STRING"
@@ -53,6 +52,12 @@ WRITE           "write"|"WRITE"
 AND             "&"
 OR              "||"
 NOT             "not"|"NOT"
+OP_MEN          "<"
+OP_MAY          ">"
+OP_COMP         "=="
+OP_MEN_IGU      {OP_MEN}{OP_AS}
+OP_MAY_IGU      {OP_MAY}{OP_AS}
+FIB             "FIB"
 
 %%
 
@@ -72,7 +77,6 @@ NOT             "not"|"NOT"
 {CICLO}         {printf("\nCiclo: %s\n", yytext);return CICLO;}
 {IF}            {printf("\nIF: %s\n", yytext);return IF;}
 {ELSE}          {printf("\nElse: %s\n", yytext);return ELSE;}
-{ASIGNACION}    {printf("\nAsignacion: %s\n", yytext);return ASIGNACION;}
 {INT}           {printf("\nINT: %s\n", yytext);
                                 int value = atoi(strdup(yytext));
                                 if( value > MAX_NUM_16_BITS ) {
@@ -114,6 +118,13 @@ NOT             "not"|"NOT"
 {COMENTARIO_A}  {;}
 {COMENTARIO_C}  {;}
 {COMENTARIO_I}  {;}
+{COMILLA}       {printf("\nComilla: %s\n", yytext);return COMILLA;}
+{OP_MEN}        {printf("\nComilla: %s\n", yytext);return OP_MEN;}
+{OP_MAY}        {printf("\nComilla: %s\n", yytext);return OP_MAY;}
+{OP_COMP}       {printf("\nComilla: %s\n", yytext);return OP_COMP;}
+{OP_MEN_IGU}    {printf("\nComilla: %s\n", yytext);return OP_MEN_IGU;}
+{OP_MAY_IGU}    {printf("\nComilla: %s\n", yytext);return OP_MAY_IGU;}
+{FIB}           {printf("\nFIB: %s\n", yytext);return FIB;}
 .			    { printf( "ERROR LEXICO : Caracter no reconocido: %s\n", yytext ); exit (0);}
 
 %%
