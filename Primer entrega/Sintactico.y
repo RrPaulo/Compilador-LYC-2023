@@ -105,7 +105,7 @@ condicion:
         comparacion
         |condicion AND comparacion
         |condicion OR comparacion;
-        |condicion NOT comparacion;
+        |NOT comparacion;
 
 comparacion:
         expresion comparador expresion;

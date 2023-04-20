@@ -97,9 +97,11 @@ FIB             "FIB"
 {OP_MEN_IGU}    {printf("\nLexico --> Operador Menor Igual: %s\n", yytext);return OP_MEN_IGU;}
 {OP_MAY_IGU}    {printf("\nLexico --> Operador Mayor Igual: %s\n", yytext);return OP_MAY_IGU;}
 {FIB}           {printf("\nLexico -->FIB: %s\n", yytext);return FIB;}
-{ID}			{printf("\nLexico -->Identificador: %s\n", yytext);return ID;}//yylval.strVal = strdup(yytext);return ID;}
+{ID}			{printf("\nLexico -->Identificador: %s\n", yytext);return ID;}
 {CTE}           {printf("\nLexico -->Cte Int: %s\n", yytext);
-                    int value = atoi(strdup(yytext));if( value > MAX_NUM_16_BITS ) {printf("\nLexico --> El entero supera los limites permitidos. \n");
+                    int value = atoi(strdup(yytext));
+                    if( value > MAX_NUM_16_BITS ) {
+                        printf("\nLexico --> El entero supera los limites permitidos. \n");
                         exit(1);
                     } else {
                     // yylval.strVal = strdup(yytext);
@@ -113,7 +115,9 @@ FIB             "FIB"
                         //yylval.strVal = strdup(yytext);
                         return CONST_REAL; }}
 
-{CONST_STRING}  {printf("\nLexico --> Constante string: %s\n", yytext);if(strlen(yytext) > MAX_CHARACTERS){printf( "\nLexico --> El string supera los limites permitidos. \n");
+{CONST_STRING}  {printf("\nLexico --> Constante string: %s\n", yytext);
+                    if(strlen(yytext) > MAX_CHARACTERS){
+                        printf( "\nLexico --> El string supera los limites permitidos. \n");
                         exit(1);
                     } else {
                         //yylval.strVal = strdup(yytext);
