@@ -2,11 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "y.tab.h"
+#include "lista.h"
+#include "pila.h"
+
 int yystopparser=0;
 FILE  *yyin;
 
   int yyerror();
   int yylex();
+  extern char* yytext;
+  extern int yylineno;
 
 
 %}
@@ -100,13 +105,14 @@ condicion:
         comparacion
         |condicion AND comparacion
         |condicion OR comparacion;
+        |condicion NOT comparacion;
 
 comparacion:
         expresion comparador expresion;
 
 comparador:
         OP_MEN
-        |OP_MA
+        |OP_MAY
         |OP_COMP
         |OP_MEN_IGU
         |OP_MAY_IGU;
