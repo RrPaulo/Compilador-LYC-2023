@@ -1,0 +1,1144 @@
+Terminals unused in grammar
+
+   COMILLA
+   COMENTARIO_A
+   COMENTARIO_C
+   COMENTARIO_I
+   .
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: sentencia
+    2         | programa sentencia
+
+    3 sentencia: asignacion
+    4          | declaracion
+    5          | read
+    6          | write
+    7          | ciclo
+    8          | if
+
+    9 asignacion: ID OP_AS expresion
+
+   10 declaracion: INIT LA lista_declaracion LC
+
+   11 lista_declaracion: lista_declaracion lista_id DOS_PUNTOS tipo
+   12                  | lista_id DOS_PUNTOS tipo
+
+   13 lista_id: lista_id COMA ID
+   14         | ID
+
+   15 tipo: INT
+   16     | FLOAT
+   17     | STRING
+
+   18 read: READ PA ID PC
+
+   19 write: WRITE PA ID PC
+   20      | WRITE PA CONST_STRING PC
+
+   21 ciclo: CICLO PA condicion PC LA programa LC
+
+   22 if: IF PA condicion PC LA programa LC
+   23   | IF PA condicion PC LA programa LC ELSE LA programa LC
+
+   24 condicion: comparacion
+   25          | condicion AND comparacion
+   26          | condicion OR comparacion
+   27          | NOT comparacion
+
+   28 comparacion: expresion comparador expresion
+
+   29 comparador: OP_MEN
+   30           | OP_MAY
+   31           | OP_COMP
+   32           | OP_MEN_IGU
+   33           | OP_MAY_IGU
+
+   34 expresion: termino
+   35          | expresion OP_SUM termino
+   36          | expresion OP_RES termino
+
+   37 termino: factor
+   38        | termino OP_MUL factor
+   39        | termino OP_DIV factor
+
+   40 factor: ID
+   41       | CTE
+   42       | CONST_REAL
+   43       | CONST_STRING
+   44       | fibonacci
+   45       | PA expresion PC
+
+   46 fibonacci: FIB PA CTE PC
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+error (256)
+CTE (258) 41 46
+ID (259) 9 13 14 18 19 40
+OP_AS (260) 9
+OP_SUM (261) 35
+OP_MUL (262) 38
+OP_RES (263) 36
+OP_DIV (264) 39
+PA (265) 18 19 20 21 22 23 45 46
+PC (266) 18 19 20 21 22 23 45 46
+CONST_REAL (267) 42
+CONST_STRING (268) 20 43
+LA (269) 10 21 22 23
+LC (270) 10 21 22 23
+COMILLA (271)
+DOS_PUNTOS (272) 11 12
+COMA (273) 13
+COMENTARIO_A (274)
+COMENTARIO_C (275)
+COMENTARIO_I (276)
+CICLO (277) 21
+IF (278) 22 23
+ELSE (279) 23
+INT (280) 15
+FLOAT (281) 16
+STRING (282) 17
+INIT (283) 10
+READ (284) 18
+WRITE (285) 19 20
+AND (286) 25
+OR (287) 26
+NOT (288) 27
+OP_MEN (289) 29
+OP_MAY (290) 30
+OP_COMP (291) 31
+OP_MEN_IGU (292) 32
+OP_MAY_IGU (293) 33
+FIB (294) 46
+. (295)
+
+
+No terminales con las reglas donde aparecen
+
+$accept (41)
+    en la izquierda: 0
+programa (42)
+    en la izquierda: 1 2, en la derecha: 0 2 21 22 23
+sentencia (43)
+    en la izquierda: 3 4 5 6 7 8, en la derecha: 1 2
+asignacion (44)
+    en la izquierda: 9, en la derecha: 3
+declaracion (45)
+    en la izquierda: 10, en la derecha: 4
+lista_declaracion (46)
+    en la izquierda: 11 12, en la derecha: 10 11
+lista_id (47)
+    en la izquierda: 13 14, en la derecha: 11 12 13
+tipo (48)
+    en la izquierda: 15 16 17, en la derecha: 11 12
+read (49)
+    en la izquierda: 18, en la derecha: 5
+write (50)
+    en la izquierda: 19 20, en la derecha: 6
+ciclo (51)
+    en la izquierda: 21, en la derecha: 7
+if (52)
+    en la izquierda: 22 23, en la derecha: 8
+condicion (53)
+    en la izquierda: 24 25 26 27, en la derecha: 21 22 23 25 26
+comparacion (54)
+    en la izquierda: 28, en la derecha: 24 25 26 27
+comparador (55)
+    en la izquierda: 29 30 31 32 33, en la derecha: 28
+expresion (56)
+    en la izquierda: 34 35 36, en la derecha: 9 28 35 36 45
+termino (57)
+    en la izquierda: 37 38 39, en la derecha: 34 35 36 38 39
+factor (58)
+    en la izquierda: 40 41 42 43 44 45, en la derecha: 37 38 39
+fibonacci (59)
+    en la izquierda: 46, en la derecha: 44
+
+
+estado 0
+
+    0 $accept: . programa $end
+
+    ID     desplazar e ir al estado 1
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    programa     ir al estado 7
+    sentencia    ir al estado 8
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 1
+
+    9 asignacion: ID . OP_AS expresion
+
+    OP_AS  desplazar e ir al estado 15
+
+
+estado 2
+
+   21 ciclo: CICLO . PA condicion PC LA programa LC
+
+    PA  desplazar e ir al estado 16
+
+
+estado 3
+
+   22 if: IF . PA condicion PC LA programa LC
+   23   | IF . PA condicion PC LA programa LC ELSE LA programa LC
+
+    PA  desplazar e ir al estado 17
+
+
+estado 4
+
+   10 declaracion: INIT . LA lista_declaracion LC
+
+    LA  desplazar e ir al estado 18
+
+
+estado 5
+
+   18 read: READ . PA ID PC
+
+    PA  desplazar e ir al estado 19
+
+
+estado 6
+
+   19 write: WRITE . PA ID PC
+   20      | WRITE . PA CONST_STRING PC
+
+    PA  desplazar e ir al estado 20
+
+
+estado 7
+
+    0 $accept: programa . $end
+    2 programa: programa . sentencia
+
+    $end   desplazar e ir al estado 21
+    ID     desplazar e ir al estado 1
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    sentencia    ir al estado 22
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 8
+
+    1 programa: sentencia .
+
+    $default  reduce usando la regla 1 (programa)
+
+
+estado 9
+
+    3 sentencia: asignacion .
+
+    $default  reduce usando la regla 3 (sentencia)
+
+
+estado 10
+
+    4 sentencia: declaracion .
+
+    $default  reduce usando la regla 4 (sentencia)
+
+
+estado 11
+
+    5 sentencia: read .
+
+    $default  reduce usando la regla 5 (sentencia)
+
+
+estado 12
+
+    6 sentencia: write .
+
+    $default  reduce usando la regla 6 (sentencia)
+
+
+estado 13
+
+    7 sentencia: ciclo .
+
+    $default  reduce usando la regla 7 (sentencia)
+
+
+estado 14
+
+    8 sentencia: if .
+
+    $default  reduce usando la regla 8 (sentencia)
+
+
+estado 15
+
+    9 asignacion: ID OP_AS . expresion
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    expresion  ir al estado 29
+    termino    ir al estado 30
+    factor     ir al estado 31
+    fibonacci  ir al estado 32
+
+
+estado 16
+
+   21 ciclo: CICLO PA . condicion PC LA programa LC
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    NOT           desplazar e ir al estado 33
+    FIB           desplazar e ir al estado 28
+
+    condicion    ir al estado 34
+    comparacion  ir al estado 35
+    expresion    ir al estado 36
+    termino      ir al estado 30
+    factor       ir al estado 31
+    fibonacci    ir al estado 32
+
+
+estado 17
+
+   22 if: IF PA . condicion PC LA programa LC
+   23   | IF PA . condicion PC LA programa LC ELSE LA programa LC
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    NOT           desplazar e ir al estado 33
+    FIB           desplazar e ir al estado 28
+
+    condicion    ir al estado 37
+    comparacion  ir al estado 35
+    expresion    ir al estado 36
+    termino      ir al estado 30
+    factor       ir al estado 31
+    fibonacci    ir al estado 32
+
+
+estado 18
+
+   10 declaracion: INIT LA . lista_declaracion LC
+
+    ID  desplazar e ir al estado 38
+
+    lista_declaracion  ir al estado 39
+    lista_id           ir al estado 40
+
+
+estado 19
+
+   18 read: READ PA . ID PC
+
+    ID  desplazar e ir al estado 41
+
+
+estado 20
+
+   19 write: WRITE PA . ID PC
+   20      | WRITE PA . CONST_STRING PC
+
+    ID            desplazar e ir al estado 42
+    CONST_STRING  desplazar e ir al estado 43
+
+
+estado 21
+
+    0 $accept: programa $end .
+
+    $default  aceptar
+
+
+estado 22
+
+    2 programa: programa sentencia .
+
+    $default  reduce usando la regla 2 (programa)
+
+
+estado 23
+
+   41 factor: CTE .
+
+    $default  reduce usando la regla 41 (factor)
+
+
+estado 24
+
+   40 factor: ID .
+
+    $default  reduce usando la regla 40 (factor)
+
+
+estado 25
+
+   45 factor: PA . expresion PC
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    expresion  ir al estado 44
+    termino    ir al estado 30
+    factor     ir al estado 31
+    fibonacci  ir al estado 32
+
+
+estado 26
+
+   42 factor: CONST_REAL .
+
+    $default  reduce usando la regla 42 (factor)
+
+
+estado 27
+
+   43 factor: CONST_STRING .
+
+    $default  reduce usando la regla 43 (factor)
+
+
+estado 28
+
+   46 fibonacci: FIB . PA CTE PC
+
+    PA  desplazar e ir al estado 45
+
+
+estado 29
+
+    9 asignacion: ID OP_AS expresion .
+   35 expresion: expresion . OP_SUM termino
+   36          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 46
+    OP_RES  desplazar e ir al estado 47
+
+    $default  reduce usando la regla 9 (asignacion)
+
+
+estado 30
+
+   34 expresion: termino .
+   38 termino: termino . OP_MUL factor
+   39        | termino . OP_DIV factor
+
+    OP_MUL  desplazar e ir al estado 48
+    OP_DIV  desplazar e ir al estado 49
+
+    $default  reduce usando la regla 34 (expresion)
+
+
+estado 31
+
+   37 termino: factor .
+
+    $default  reduce usando la regla 37 (termino)
+
+
+estado 32
+
+   44 factor: fibonacci .
+
+    $default  reduce usando la regla 44 (factor)
+
+
+estado 33
+
+   27 condicion: NOT . comparacion
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    comparacion  ir al estado 50
+    expresion    ir al estado 36
+    termino      ir al estado 30
+    factor       ir al estado 31
+    fibonacci    ir al estado 32
+
+
+estado 34
+
+   21 ciclo: CICLO PA condicion . PC LA programa LC
+   25 condicion: condicion . AND comparacion
+   26          | condicion . OR comparacion
+
+    PC   desplazar e ir al estado 51
+    AND  desplazar e ir al estado 52
+    OR   desplazar e ir al estado 53
+
+
+estado 35
+
+   24 condicion: comparacion .
+
+    $default  reduce usando la regla 24 (condicion)
+
+
+estado 36
+
+   28 comparacion: expresion . comparador expresion
+   35 expresion: expresion . OP_SUM termino
+   36          | expresion . OP_RES termino
+
+    OP_SUM      desplazar e ir al estado 46
+    OP_RES      desplazar e ir al estado 47
+    OP_MEN      desplazar e ir al estado 54
+    OP_MAY      desplazar e ir al estado 55
+    OP_COMP     desplazar e ir al estado 56
+    OP_MEN_IGU  desplazar e ir al estado 57
+    OP_MAY_IGU  desplazar e ir al estado 58
+
+    comparador  ir al estado 59
+
+
+estado 37
+
+   22 if: IF PA condicion . PC LA programa LC
+   23   | IF PA condicion . PC LA programa LC ELSE LA programa LC
+   25 condicion: condicion . AND comparacion
+   26          | condicion . OR comparacion
+
+    PC   desplazar e ir al estado 60
+    AND  desplazar e ir al estado 52
+    OR   desplazar e ir al estado 53
+
+
+estado 38
+
+   14 lista_id: ID .
+
+    $default  reduce usando la regla 14 (lista_id)
+
+
+estado 39
+
+   10 declaracion: INIT LA lista_declaracion . LC
+   11 lista_declaracion: lista_declaracion . lista_id DOS_PUNTOS tipo
+
+    ID  desplazar e ir al estado 38
+    LC  desplazar e ir al estado 61
+
+    lista_id  ir al estado 62
+
+
+estado 40
+
+   12 lista_declaracion: lista_id . DOS_PUNTOS tipo
+   13 lista_id: lista_id . COMA ID
+
+    DOS_PUNTOS  desplazar e ir al estado 63
+    COMA        desplazar e ir al estado 64
+
+
+estado 41
+
+   18 read: READ PA ID . PC
+
+    PC  desplazar e ir al estado 65
+
+
+estado 42
+
+   19 write: WRITE PA ID . PC
+
+    PC  desplazar e ir al estado 66
+
+
+estado 43
+
+   20 write: WRITE PA CONST_STRING . PC
+
+    PC  desplazar e ir al estado 67
+
+
+estado 44
+
+   35 expresion: expresion . OP_SUM termino
+   36          | expresion . OP_RES termino
+   45 factor: PA expresion . PC
+
+    OP_SUM  desplazar e ir al estado 46
+    OP_RES  desplazar e ir al estado 47
+    PC      desplazar e ir al estado 68
+
+
+estado 45
+
+   46 fibonacci: FIB PA . CTE PC
+
+    CTE  desplazar e ir al estado 69
+
+
+estado 46
+
+   35 expresion: expresion OP_SUM . termino
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    termino    ir al estado 70
+    factor     ir al estado 31
+    fibonacci  ir al estado 32
+
+
+estado 47
+
+   36 expresion: expresion OP_RES . termino
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    termino    ir al estado 71
+    factor     ir al estado 31
+    fibonacci  ir al estado 32
+
+
+estado 48
+
+   38 termino: termino OP_MUL . factor
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    factor     ir al estado 72
+    fibonacci  ir al estado 32
+
+
+estado 49
+
+   39 termino: termino OP_DIV . factor
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    factor     ir al estado 73
+    fibonacci  ir al estado 32
+
+
+estado 50
+
+   27 condicion: NOT comparacion .
+
+    $default  reduce usando la regla 27 (condicion)
+
+
+estado 51
+
+   21 ciclo: CICLO PA condicion PC . LA programa LC
+
+    LA  desplazar e ir al estado 74
+
+
+estado 52
+
+   25 condicion: condicion AND . comparacion
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    comparacion  ir al estado 75
+    expresion    ir al estado 36
+    termino      ir al estado 30
+    factor       ir al estado 31
+    fibonacci    ir al estado 32
+
+
+estado 53
+
+   26 condicion: condicion OR . comparacion
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    comparacion  ir al estado 76
+    expresion    ir al estado 36
+    termino      ir al estado 30
+    factor       ir al estado 31
+    fibonacci    ir al estado 32
+
+
+estado 54
+
+   29 comparador: OP_MEN .
+
+    $default  reduce usando la regla 29 (comparador)
+
+
+estado 55
+
+   30 comparador: OP_MAY .
+
+    $default  reduce usando la regla 30 (comparador)
+
+
+estado 56
+
+   31 comparador: OP_COMP .
+
+    $default  reduce usando la regla 31 (comparador)
+
+
+estado 57
+
+   32 comparador: OP_MEN_IGU .
+
+    $default  reduce usando la regla 32 (comparador)
+
+
+estado 58
+
+   33 comparador: OP_MAY_IGU .
+
+    $default  reduce usando la regla 33 (comparador)
+
+
+estado 59
+
+   28 comparacion: expresion comparador . expresion
+
+    CTE           desplazar e ir al estado 23
+    ID            desplazar e ir al estado 24
+    PA            desplazar e ir al estado 25
+    CONST_REAL    desplazar e ir al estado 26
+    CONST_STRING  desplazar e ir al estado 27
+    FIB           desplazar e ir al estado 28
+
+    expresion  ir al estado 77
+    termino    ir al estado 30
+    factor     ir al estado 31
+    fibonacci  ir al estado 32
+
+
+estado 60
+
+   22 if: IF PA condicion PC . LA programa LC
+   23   | IF PA condicion PC . LA programa LC ELSE LA programa LC
+
+    LA  desplazar e ir al estado 78
+
+
+estado 61
+
+   10 declaracion: INIT LA lista_declaracion LC .
+
+    $default  reduce usando la regla 10 (declaracion)
+
+
+estado 62
+
+   11 lista_declaracion: lista_declaracion lista_id . DOS_PUNTOS tipo
+   13 lista_id: lista_id . COMA ID
+
+    DOS_PUNTOS  desplazar e ir al estado 79
+    COMA        desplazar e ir al estado 64
+
+
+estado 63
+
+   12 lista_declaracion: lista_id DOS_PUNTOS . tipo
+
+    INT     desplazar e ir al estado 80
+    FLOAT   desplazar e ir al estado 81
+    STRING  desplazar e ir al estado 82
+
+    tipo  ir al estado 83
+
+
+estado 64
+
+   13 lista_id: lista_id COMA . ID
+
+    ID  desplazar e ir al estado 84
+
+
+estado 65
+
+   18 read: READ PA ID PC .
+
+    $default  reduce usando la regla 18 (read)
+
+
+estado 66
+
+   19 write: WRITE PA ID PC .
+
+    $default  reduce usando la regla 19 (write)
+
+
+estado 67
+
+   20 write: WRITE PA CONST_STRING PC .
+
+    $default  reduce usando la regla 20 (write)
+
+
+estado 68
+
+   45 factor: PA expresion PC .
+
+    $default  reduce usando la regla 45 (factor)
+
+
+estado 69
+
+   46 fibonacci: FIB PA CTE . PC
+
+    PC  desplazar e ir al estado 85
+
+
+estado 70
+
+   35 expresion: expresion OP_SUM termino .
+   38 termino: termino . OP_MUL factor
+   39        | termino . OP_DIV factor
+
+    OP_MUL  desplazar e ir al estado 48
+    OP_DIV  desplazar e ir al estado 49
+
+    $default  reduce usando la regla 35 (expresion)
+
+
+estado 71
+
+   36 expresion: expresion OP_RES termino .
+   38 termino: termino . OP_MUL factor
+   39        | termino . OP_DIV factor
+
+    OP_MUL  desplazar e ir al estado 48
+    OP_DIV  desplazar e ir al estado 49
+
+    $default  reduce usando la regla 36 (expresion)
+
+
+estado 72
+
+   38 termino: termino OP_MUL factor .
+
+    $default  reduce usando la regla 38 (termino)
+
+
+estado 73
+
+   39 termino: termino OP_DIV factor .
+
+    $default  reduce usando la regla 39 (termino)
+
+
+estado 74
+
+   21 ciclo: CICLO PA condicion PC LA . programa LC
+
+    ID     desplazar e ir al estado 1
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    programa     ir al estado 86
+    sentencia    ir al estado 8
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 75
+
+   25 condicion: condicion AND comparacion .
+
+    $default  reduce usando la regla 25 (condicion)
+
+
+estado 76
+
+   26 condicion: condicion OR comparacion .
+
+    $default  reduce usando la regla 26 (condicion)
+
+
+estado 77
+
+   28 comparacion: expresion comparador expresion .
+   35 expresion: expresion . OP_SUM termino
+   36          | expresion . OP_RES termino
+
+    OP_SUM  desplazar e ir al estado 46
+    OP_RES  desplazar e ir al estado 47
+
+    $default  reduce usando la regla 28 (comparacion)
+
+
+estado 78
+
+   22 if: IF PA condicion PC LA . programa LC
+   23   | IF PA condicion PC LA . programa LC ELSE LA programa LC
+
+    ID     desplazar e ir al estado 1
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    programa     ir al estado 87
+    sentencia    ir al estado 8
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 79
+
+   11 lista_declaracion: lista_declaracion lista_id DOS_PUNTOS . tipo
+
+    INT     desplazar e ir al estado 80
+    FLOAT   desplazar e ir al estado 81
+    STRING  desplazar e ir al estado 82
+
+    tipo  ir al estado 88
+
+
+estado 80
+
+   15 tipo: INT .
+
+    $default  reduce usando la regla 15 (tipo)
+
+
+estado 81
+
+   16 tipo: FLOAT .
+
+    $default  reduce usando la regla 16 (tipo)
+
+
+estado 82
+
+   17 tipo: STRING .
+
+    $default  reduce usando la regla 17 (tipo)
+
+
+estado 83
+
+   12 lista_declaracion: lista_id DOS_PUNTOS tipo .
+
+    $default  reduce usando la regla 12 (lista_declaracion)
+
+
+estado 84
+
+   13 lista_id: lista_id COMA ID .
+
+    $default  reduce usando la regla 13 (lista_id)
+
+
+estado 85
+
+   46 fibonacci: FIB PA CTE PC .
+
+    $default  reduce usando la regla 46 (fibonacci)
+
+
+estado 86
+
+    2 programa: programa . sentencia
+   21 ciclo: CICLO PA condicion PC LA programa . LC
+
+    ID     desplazar e ir al estado 1
+    LC     desplazar e ir al estado 89
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    sentencia    ir al estado 22
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 87
+
+    2 programa: programa . sentencia
+   22 if: IF PA condicion PC LA programa . LC
+   23   | IF PA condicion PC LA programa . LC ELSE LA programa LC
+
+    ID     desplazar e ir al estado 1
+    LC     desplazar e ir al estado 90
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    sentencia    ir al estado 22
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 88
+
+   11 lista_declaracion: lista_declaracion lista_id DOS_PUNTOS tipo .
+
+    $default  reduce usando la regla 11 (lista_declaracion)
+
+
+estado 89
+
+   21 ciclo: CICLO PA condicion PC LA programa LC .
+
+    $default  reduce usando la regla 21 (ciclo)
+
+
+estado 90
+
+   22 if: IF PA condicion PC LA programa LC .
+   23   | IF PA condicion PC LA programa LC . ELSE LA programa LC
+
+    ELSE  desplazar e ir al estado 91
+
+    $default  reduce usando la regla 22 (if)
+
+
+estado 91
+
+   23 if: IF PA condicion PC LA programa LC ELSE . LA programa LC
+
+    LA  desplazar e ir al estado 92
+
+
+estado 92
+
+   23 if: IF PA condicion PC LA programa LC ELSE LA . programa LC
+
+    ID     desplazar e ir al estado 1
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    programa     ir al estado 93
+    sentencia    ir al estado 8
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 93
+
+    2 programa: programa . sentencia
+   23 if: IF PA condicion PC LA programa LC ELSE LA programa . LC
+
+    ID     desplazar e ir al estado 1
+    LC     desplazar e ir al estado 94
+    CICLO  desplazar e ir al estado 2
+    IF     desplazar e ir al estado 3
+    INIT   desplazar e ir al estado 4
+    READ   desplazar e ir al estado 5
+    WRITE  desplazar e ir al estado 6
+
+    sentencia    ir al estado 22
+    asignacion   ir al estado 9
+    declaracion  ir al estado 10
+    read         ir al estado 11
+    write        ir al estado 12
+    ciclo        ir al estado 13
+    if           ir al estado 14
+
+
+estado 94
+
+   23 if: IF PA condicion PC LA programa LC ELSE LA programa LC .
+
+    $default  reduce usando la regla 23 (if)

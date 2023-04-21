@@ -38,7 +38,7 @@ int insertOrder(tList *p, char* name, char* dataType, char* value, int length)
     if(!nue)
         return NO_MEMORY;
 
-    while(*p && ((result = (strcmp((*p)->name, name))) < 0))
+    while(*p )
         p = &(*p)->next;
 
     if(result == 0)

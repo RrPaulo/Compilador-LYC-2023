@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "y.tab.h"
 #include "lista.h"
 #include "pila.h"
@@ -8,16 +9,23 @@
 int yystopparser=0;
 FILE  *yyin;
 
-  int yyerror();
-  int yylex();
-  extern char* yytext;
-  extern int yylineno;
+tList symbolTable;
+tStack stackDataTypeDecVar;
+tStack invertStackDataType;
+tStack stackVar;
+
+int yyerror();
+int yylex();
+extern char* yytext;
+extern int yylineno;
 
 
 %}
-
-%token CTE
-%token ID
+%union{
+    char* strVal;
+}
+%token <strVal>CTE
+%token <strVal>ID
 %token OP_AS
 %token OP_SUM
 %token OP_MUL
@@ -25,8 +33,8 @@ FILE  *yyin;
 %token OP_DIV
 %token PA
 %token PC
-%token CONST_REAL
-%token CONST_STRING
+%token <strVal>CONST_REAL
+%token <strVal>CONST_STRING
 %token LA
 %token LC
 %token COMILLA
@@ -53,7 +61,7 @@ FILE  *yyin;
 %token OP_MEN_IGU
 %token OP_MAY_IGU
 %token FIB
-
+%token .
 %%
 programa:
         sentencia
@@ -68,24 +76,39 @@ sentencia:
         |if ;
 
 asignacion: 
-          ID OP_AS expresion {printf("    ID = Expresion es ASIGNACION\n");}
+          ID OP_AS expresion {printf("ID = Expresion es ASIGNACION\n");}
 	  ;
 
 declaracion: 
-                INIT LA lista_declaracion LC {printf("Sintactico --> DECLARACION\n");};
+                INIT LA lista_declaracion LC    {
+                                                printf("Sintactico --> DECLARACION\n");
+                                                char dataType[100];
+                                                char variable[100];
+                                                while(!emptyStack(&stackVar))
+                                                {
+                                                        popStack(&stackVar,variable); 
+                                                        if(strcmp(variable,"*") == 0)
+                                                        {
+                                                                popStack(&stackDataTypeDecVar,dataType);
+                                                                popStack(&stackVar,variable); 
+                                                        }
+                                                        printf("2while TS4444444444444444444444 %s,%s\n",dataType,variable);
+                                                        insertVariable(&symbolTable,variable,dataType);
+                                                }
+                                                };
 
 lista_declaracion:  
-                    lista_declaracion lista_id DOS_PUNTOS tipo
-                    |lista_id DOS_PUNTOS tipo;
+                    lista_declaracion lista_id DOS_PUNTOS tipo {printf("se pone el * para hacer tope \n");pushStack(&stackVar,"*");}
+                    |lista_id DOS_PUNTOS tipo {printf("se pone el * para hacer tope \n");pushStack(&stackVar,"*");};
 
 lista_id: 
-          lista_id COMA ID
-          |ID;
+          lista_id COMA ID {printf("LISTA COMA ID PESOS 3 %s\n",$3);pushStack(&stackVar,$3);}
+          |ID {printf("IDDDDDDD %s\n",$1);pushStack(&stackVar,$1);};
 
 tipo: 
-      INT
-      |FLOAT
-      |STRING;
+      INT       {printf("Entro a entero11111111111111111111111111111111111\n");pushStack(&stackDataTypeDecVar,"INTEGER");}
+      |FLOAT    {printf("Entro a Float2222222222222222222222222222222222\n");pushStack(&stackDataTypeDecVar,"FLOAT");}	
+      |STRING   {pushStack(&stackDataTypeDecVar,"STRING");};
 
 read:
           READ PA ID PC {printf("Sintactico --> READ\n");};
@@ -132,9 +155,9 @@ termino:
 
 factor: 
       ID                {printf("   ID es Factor \n");}
-      | CTE             {printf("   CTE es Factor\n");}
-      | CONST_REAL      {printf("   CTE_R es Factor\n");}
-      | CONST_STRING    {printf("   CTE_S es Factor\n");}
+      | CTE             {printf("   CTE es Factor\n");insertNumber(&symbolTable,$1);}
+      | CONST_REAL      {printf("   CTE_R es Factor\n");insertNumber(&symbolTable,$1);}
+      | CONST_STRING    {printf("   CTE_S es Factor\n"); insertString(&symbolTable, $1);}
       | fibonacci       {printf("   Fibonacci es Factor\n");}
       | PA expresion PC {printf(" Expresion entre parentesis es Factor\n");}
      	;
@@ -148,20 +171,25 @@ int main(int argc, char *argv[])
 {
     if((yyin = fopen(argv[1], "rt"))==NULL)
     {
-        printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);
-       
+        printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);    
     }
-    else
-    { 
-        
-        yyparse();
-        
-    }
-	fclose(yyin);
-        return 0;
+    printf("\n Comienzo de la compilacion \n\n");
+
+    createList(&symbolTable);
+    createStack(&stackVar);
+    createStack(&stackDataTypeDecVar);
+    createStack(&invertStackDataType);
+    
+    yyparse();
+   
+    deleteTable(&symbolTable);
+    
+    printf("\n Compilacion exitosa \n");
+    fclose(yyin);
+    return 0;
 }
 int yyerror(void)
-     {
-       printf("Error Sintactico\n");
-	 exit (1);
-     }
+{
+        printf("Error Sintactico\n");
+        exit (1);
+}

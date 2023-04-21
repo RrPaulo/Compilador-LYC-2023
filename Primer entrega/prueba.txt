@@ -1,0 +1,24 @@
+init {
+    a1, b1 : Float
+    a3,b3,d2 : Float
+    variable1 : Int
+    p1, p2, p3 : String
+}
+if (not a > b)
+{
+    write("a no es mas grande que b")
+}
+
+a = 87878.6
+a = 99.
+a = .9999
+b = "asldk  fh sjf"
+
+a = 1
+b = 3
+
+ciclo (a > b)
+{
+    write("a es mas grande que b")
+    a = a + 1
+}

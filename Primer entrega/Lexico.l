@@ -12,7 +12,6 @@
 #define LIMIT_FLOAT_SUP pow(3.40282,38)
 
 FILE  *yyin;
-int yylval;
 char *yyltext;
 
 int yyerror(void);
@@ -97,22 +96,22 @@ FIB             "FIB"
 {OP_MEN_IGU}    {printf("\nLexico --> Operador Menor Igual: %s\n", yytext);return OP_MEN_IGU;}
 {OP_MAY_IGU}    {printf("\nLexico --> Operador Mayor Igual: %s\n", yytext);return OP_MAY_IGU;}
 {FIB}           {printf("\nLexico -->FIB: %s\n", yytext);return FIB;}
-{ID}			{printf("\nLexico -->Identificador: %s\n", yytext);return ID;}
+{ID}			{printf("\nLexico -->Identificador: %s\n", yytext);yylval.strVal = strdup(yytext);return ID;}
 {CTE}           {printf("\nLexico -->Cte Int: %s\n", yytext);
                     int value = atoi(strdup(yytext));
                     if( value > MAX_NUM_16_BITS ) {
                         printf("\nLexico --> El entero supera los limites permitidos. \n");
                         exit(1);
                     } else {
-                    // yylval.strVal = strdup(yytext);
-                    return CTE;} }
+                        yylval.strVal = strdup(yytext);
+                        return CTE;} }
 
 {CONST_REAL}    {printf("\nLexico --> Constante flotante: %s\n", yytext); 
                     if (atof(yytext) > LIMIT_FLOAT_SUP || atof(yytext) < LIMIT_FLOAT_INF){
                             printf( "\nLexico --> El real supera los limites permitidos. \n");
                             exit(1);
                     } else{
-                        //yylval.strVal = strdup(yytext);
+                        yylval.strVal = strdup(yytext);
                         return CONST_REAL; }}
 
 {CONST_STRING}  {printf("\nLexico --> Constante string: %s\n", yytext);
@@ -120,12 +119,12 @@ FIB             "FIB"
                         printf( "\nLexico --> El string supera los limites permitidos. \n");
                         exit(1);
                     } else {
-                        //yylval.strVal = strdup(yytext);
+                        yylval.strVal = strdup(yytext);
                         return CONST_STRING; }}
 "\n"      		
 "\t"
 "\n\t"
 " "             		
 "\r\n"
-.			    { printf( "\nLexico -->ERROR LEXICO : Caracter no reconocido: %s\n", yytext ); exit (0);}
+.			    { printf( "\nLexico -->ERROR LEXICO : Caracter no reconocido,linea de eror: %s\n", yytext,yylineno ); exit (0);}
 %%
