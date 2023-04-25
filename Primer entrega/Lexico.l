@@ -24,8 +24,9 @@ int yyerror(void);
 DIGITO			[0-9]
 LETRA			[a-zA-Z]
 CTE		        {DIGITO}+
+CARACTER        [a-z|A-Z|0-9|=|OP_MAY|OP_MEN|!|:|+|\-|*|/|@|.|?]
 CONST_REAL      {DIGITO}+"."{DIGITO}+|{DIGITO}+"."|"."{DIGITO}+
-CONST_STRING    {COMILLA}{1}(.)*{COMILLA}{1}
+CONST_STRING    {COMILLA}({CARACTER}+|" ")*{COMILLA}
 ID			    {LETRA}({LETRA}|{DIGITO})*
 OP_AS   		"="
 OP_SUM		    "+"
@@ -41,7 +42,7 @@ DOS_PUNTOS      [:]
 COMA            [,]
 COMENTARIO_A    "*""-"
 COMENTARIO_C    "-""*"
-COMENTARIO_I    {COMENTARIO_A}(.)*{COMENTARIO_C}
+COMENTARIO_I    {COMENTARIO_A}({CARACTER}|" ")*{COMENTARIO_C}
 CICLO           "ciclo"|"CICLO"
 IF              "IF"|"If"|"if"
 ELSE            "else"|"ELSE"|"Else"
@@ -84,12 +85,11 @@ FIB             "FIB"
 {AND}           {printf("\nLexico --> And: %s\n", yytext);return AND;}
 {OR}            {printf("\nLexico --> Or: %s\n", yytext);return OR;}
 {NOT}           {printf("\nLexico --> Not: %s\n", yytext);return NOT;}
-{COMILLA}       {printf("\nLexico --> Comilla: %s\n", yytext);return COMILLA;}
 {DOS_PUNTOS}    {printf("\nLexico --> Dos Puntos: %s\n", yytext);return DOS_PUNTOS;}
 {COMA}          {printf("\nLexico --> Coma: %s\n", yytext);return COMA;}
 {COMENTARIO_A}  {;}
-{COMENTARIO_C}  {;}
 {COMENTARIO_I}  {;}
+{COMENTARIO_C}  {;}
 {OP_MEN}        {printf("\nLexico --> Operador Menor: %s\n", yytext);return OP_MEN;}
 {OP_MAY}        {printf("\nLexico --> Operador Mayor: %s\n", yytext);return OP_MAY;}
 {OP_COMP}       {printf("\nLexico --> Operador Igual: %s\n", yytext);return OP_COMP;}
@@ -121,6 +121,9 @@ FIB             "FIB"
                     } else {
                         yylval.strVal = strdup(yytext);
                         return CONST_STRING; }}
+
+{COMILLA}       {printf("\nLexico --> Comilla: %s\n", yytext);return COMILLA;}
+
 "\n"      		
 "\t"
 "\n\t"

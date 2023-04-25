@@ -81,7 +81,6 @@ asignacion:
 
 declaracion: 
                 INIT LA lista_declaracion LC    {
-                                                printf("Sintactico --> DECLARACION\n");
                                                 char dataType[100];
                                                 char variable[100];
                                                 while(!emptyStack(&stackVar))
@@ -92,22 +91,21 @@ declaracion:
                                                                 popStack(&stackDataTypeDecVar,dataType);
                                                                 popStack(&stackVar,variable); 
                                                         }
-                                                        printf("2while TS4444444444444444444444 %s,%s\n",dataType,variable);
                                                         insertVariable(&symbolTable,variable,dataType);
                                                 }
                                                 };
 
 lista_declaracion:  
-                    lista_declaracion lista_id DOS_PUNTOS tipo {printf("se pone el * para hacer tope \n");pushStack(&stackVar,"*");}
-                    |lista_id DOS_PUNTOS tipo {printf("se pone el * para hacer tope \n");pushStack(&stackVar,"*");};
+                    lista_declaracion lista_id DOS_PUNTOS tipo {pushStack(&stackVar,"*");}
+                    |lista_id DOS_PUNTOS tipo {pushStack(&stackVar,"*");};
 
 lista_id: 
-          lista_id COMA ID {printf("LISTA COMA ID PESOS 3 %s\n",$3);pushStack(&stackVar,$3);}
-          |ID {printf("IDDDDDDD %s\n",$1);pushStack(&stackVar,$1);};
+          lista_id COMA ID {pushStack(&stackVar,$3);}
+          |ID {pushStack(&stackVar,$1);};
 
 tipo: 
-      INT       {printf("Entro a entero11111111111111111111111111111111111\n");pushStack(&stackDataTypeDecVar,"INTEGER");}
-      |FLOAT    {printf("Entro a Float2222222222222222222222222222222222\n");pushStack(&stackDataTypeDecVar,"FLOAT");}	
+      INT       {pushStack(&stackDataTypeDecVar,"INTEGER");}
+      |FLOAT    {pushStack(&stackDataTypeDecVar,"FLOAT");}	
       |STRING   {pushStack(&stackDataTypeDecVar,"STRING");};
 
 read:
@@ -162,7 +160,9 @@ factor:
       | PA expresion PC {printf(" Expresion entre parentesis es Factor\n");}
      	;
 
-fibonacci: FIB PA CTE PC {printf("Sintactico --> Fibonacci\n");};
+fibonacci: 
+      FIB PA CTE PC {printf("Sintactico --> Fibonacci\n");}
+      | FIB PA ID PC {printf("Sintactico --> Fibonacci\n");};
 
 %%
 
