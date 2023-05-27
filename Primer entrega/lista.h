@@ -38,11 +38,11 @@ int insertOrder(tList *p, char* name, char* dataType, char* value, int length)
     if(!nue)
         return NO_MEMORY;
 
-    while(*p )
+    while(*p && strcmp((*p)->name, name) < 0)
         p = &(*p)->next;
-
-    if(result == 0)
+    if(*p && strcmp((*p)->name, name) == 0)
         return DUPLICATE;
+
     strcpy(nue->name, name);
     strcpy(nue->dataType, dataType);
     strcpy(nue->value, value);
@@ -64,7 +64,10 @@ int insertNumber(tList *p, char* lex)
     strcpy(name, "_");
     strcat(name, lex); 
 
-    result = insertOrder(p, name, " ", lex, 0);
+    if(strrchr (lex, '.')) {
+        result = insertOrder(p, name, "FLOAT", lex, strlen(lex));
+    }
+    result = insertOrder(p, name, "INT", lex, strlen(lex));
 
     if(result == DUPLICATE){
         printf("Lexema %s ya se ingreso en la tabla de simbolos\n",lex);
@@ -84,7 +87,7 @@ int insertString(tList *p, char* lex)
     strcpy(name, "_");
     strcat(name, newName);
 
-    result = insertOrder(p, name, " ", newName, strlen(newName));
+    result = insertOrder(p, name, "STRING", newName, strlen(newName));
 
     if(result == DUPLICATE){
         printf("Lexema %s ya se ingreso en la tabla de simbolos\n",lex);

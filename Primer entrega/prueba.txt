@@ -4,6 +4,7 @@ init {
     a3,b3,d2 : Float
     variable1 : Int
     p1, p2, p3 : String
+    a3,b3,d2 : Float
 }
 if (not a > b)
 {
