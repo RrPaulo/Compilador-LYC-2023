@@ -746,117 +746,117 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 67 "Lexico.l"
-{printf("\nLexico -->Int: %s\n", yytext);return INT;}
+{return INT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 68 "Lexico.l"
-{printf("\nLexico -->Float: %s\n", yytext);return FLOAT;}
+{return FLOAT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 69 "Lexico.l"
-{printf("\nLexico -->String: %s\n", yytext);return STRING;}
+{return STRING;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 70 "Lexico.l"
-{printf("\nLexico -->Suma: %s\n", yytext);return OP_SUM;}
+{return OP_SUM;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 71 "Lexico.l"
-{printf("\nLexico -->Asignacion: %s\n", yytext);return OP_AS;}
+{return OP_AS;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 72 "Lexico.l"
-{printf("\nLexico -->Multiplicacion: %s\n", yytext);return OP_MUL;}
+{return OP_MUL;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 73 "Lexico.l"
-{printf("\nLexico -->Resta: %s\n", yytext);return OP_RES;}
+{return OP_RES;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 74 "Lexico.l"
-{printf("\nLexico -->Division: %s\n", yytext);return OP_DIV;}
+{return OP_DIV;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 75 "Lexico.l"
-{printf("\nLexico -->ParAbre: %s\n", yytext);return PA;}
+{return PA;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 76 "Lexico.l"
-{printf("\nLexico -->ParCierra: %s\n", yytext);return PC;}
+{return PC;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 77 "Lexico.l"
-{printf("\nLexico -->Llave apertura: %s\n", yytext);return LA;}
+{return LA;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 78 "Lexico.l"
-{printf("\nLexico -->Llave cierre: %s\n", yytext);return LC;}
+{return LC;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 79 "Lexico.l"
-{printf("\nLexico -->Ciclo: %s\n", yytext);return CICLO;}
+{return CICLO;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 80 "Lexico.l"
-{printf("\nLexico -->IF: %s\n", yytext);return IF;}
+{return IF;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 81 "Lexico.l"
-{printf("\nLexico -->Else: %s\n", yytext);return ELSE;}
+{return ELSE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 82 "Lexico.l"
-{printf("\nLexico --> Init: %s\n", yytext);return INIT;}
+{return INIT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 83 "Lexico.l"
-{printf("\nLexico --> Read: %s\n", yytext);return READ;}
+{return READ;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 84 "Lexico.l"
-{printf("\nLexico --> Write: %s\n", yytext);return WRITE;}
+{return WRITE;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 85 "Lexico.l"
-{printf("\nLexico --> And: %s\n", yytext);return AND;}
+{return AND;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 86 "Lexico.l"
-{printf("\nLexico --> Or: %s\n", yytext);return OR;}
+{return OR;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 87 "Lexico.l"
-{printf("\nLexico --> Not: %s\n", yytext);return NOT;}
+{return NOT;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 88 "Lexico.l"
-{printf("\nLexico --> Dos Puntos: %s\n", yytext);return DOS_PUNTOS;}
+{return DOS_PUNTOS;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 89 "Lexico.l"
-{printf("\nLexico --> Coma: %s\n", yytext);return COMA;}
+{return COMA;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
@@ -876,42 +876,42 @@ YY_RULE_SETUP
 case 27:
 YY_RULE_SETUP
 #line 93 "Lexico.l"
-{printf("\nLexico --> Operador Menor: %s\n", yytext);return OP_MEN;}
+{return OP_MEN;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 94 "Lexico.l"
-{printf("\nLexico --> Operador Mayor: %s\n", yytext);return OP_MAY;}
+{return OP_MAY;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 95 "Lexico.l"
-{printf("\nLexico --> Operador Igual: %s\n", yytext);return OP_COMP;}
+{return OP_COMP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 96 "Lexico.l"
-{printf("\nLexico --> Operador Menor Igual: %s\n", yytext);return OP_MEN_IGU;}
+{return OP_MEN_IGU;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 97 "Lexico.l"
-{printf("\nLexico --> Operador Mayor Igual: %s\n", yytext);return OP_MAY_IGU;}
+{return OP_MAY_IGU;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 98 "Lexico.l"
-{printf("\nLexico -->FIB: %s\n", yytext);return FIB;}
+{return FIB;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 99 "Lexico.l"
-{printf("\nLexico -->Identificador: %s\n", yytext);yylval.strVal = strdup(yytext);return ID;}
+{yylval.strVal = strdup(yytext);return ID;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 100 "Lexico.l"
-{printf("\nLexico -->Cte Int: %s\n", yytext);
+{
                     int value = atoi(strdup(yytext));
                     if( value > MAX_NUM_16_BITS ) {
                         printf("\nLexico --> El entero supera los limites permitidos. \n");
@@ -923,7 +923,7 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 109 "Lexico.l"
-{printf("\nLexico --> Constante flotante: %s\n", yytext); 
+{ 
                     if (atof(yytext) > LIMIT_FLOAT_SUP || atof(yytext) < LIMIT_FLOAT_INF){
                             printf( "\nLexico --> El real supera los limites permitidos. \n");
                             exit(1);
@@ -934,7 +934,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 117 "Lexico.l"
-{printf("\nLexico --> Constante string: %s\n", yytext);
+{
                     if(strlen(yytext) > MAX_CHARACTERS){
                         printf( "\nLexico --> El string supera los limites permitidos. \n");
                         exit(1);

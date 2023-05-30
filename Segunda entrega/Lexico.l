@@ -64,40 +64,40 @@ FIB             "FIB"
 
 %%
 
-{INT}			{printf("\nLexico -->Int: %s\n", yytext);return INT;}
-{FLOAT}         {printf("\nLexico -->Float: %s\n", yytext);return FLOAT;}
-{STRING}        {printf("\nLexico -->String: %s\n", yytext);return STRING;}
-{OP_SUM}		{printf("\nLexico -->Suma: %s\n", yytext);return OP_SUM;}
-{OP_AS}			{printf("\nLexico -->Asignacion: %s\n", yytext);return OP_AS;}
-{OP_MUL}		{printf("\nLexico -->Multiplicacion: %s\n", yytext);return OP_MUL;}
-{OP_RES}		{printf("\nLexico -->Resta: %s\n", yytext);return OP_RES;}
-{OP_DIV}		{printf("\nLexico -->Division: %s\n", yytext);return OP_DIV;}
-{PA}			{printf("\nLexico -->ParAbre: %s\n", yytext);return PA;}
-{PC}			{printf("\nLexico -->ParCierra: %s\n", yytext);return PC;}
-{LA}			{printf("\nLexico -->Llave apertura: %s\n", yytext);return LA;}
-{LC}			{printf("\nLexico -->Llave cierre: %s\n", yytext);return LC;}
-{CICLO}         {printf("\nLexico -->Ciclo: %s\n", yytext);return CICLO;}
-{IF}            {printf("\nLexico -->IF: %s\n", yytext);return IF;}
-{ELSE}          {printf("\nLexico -->Else: %s\n", yytext);return ELSE;}
-{INIT}          {printf("\nLexico --> Init: %s\n", yytext);return INIT;}
-{READ}          {printf("\nLexico --> Read: %s\n", yytext);return READ;}
-{WRITE}         {printf("\nLexico --> Write: %s\n", yytext);return WRITE;}
-{AND}           {printf("\nLexico --> And: %s\n", yytext);return AND;}
-{OR}            {printf("\nLexico --> Or: %s\n", yytext);return OR;}
-{NOT}           {printf("\nLexico --> Not: %s\n", yytext);return NOT;}
-{DOS_PUNTOS}    {printf("\nLexico --> Dos Puntos: %s\n", yytext);return DOS_PUNTOS;}
-{COMA}          {printf("\nLexico --> Coma: %s\n", yytext);return COMA;}
+{INT}			{return INT;}
+{FLOAT}         {return FLOAT;}
+{STRING}        {return STRING;}
+{OP_SUM}		{return OP_SUM;}
+{OP_AS}			{return OP_AS;}
+{OP_MUL}		{return OP_MUL;}
+{OP_RES}		{return OP_RES;}
+{OP_DIV}		{return OP_DIV;}
+{PA}			{return PA;}
+{PC}			{return PC;}
+{LA}			{return LA;}
+{LC}			{return LC;}
+{CICLO}         {return CICLO;}
+{IF}            {return IF;}
+{ELSE}          {return ELSE;}
+{INIT}          {return INIT;}
+{READ}          {return READ;}
+{WRITE}         {return WRITE;}
+{AND}           {return AND;}
+{OR}            {return OR;}
+{NOT}           {return NOT;}
+{DOS_PUNTOS}    {return DOS_PUNTOS;}
+{COMA}          {return COMA;}
 {COMENTARIO_A}  {;}
 {COMENTARIO_I}  {;}
 {COMENTARIO_C}  {;}
-{OP_MEN}        {printf("\nLexico --> Operador Menor: %s\n", yytext);return OP_MEN;}
-{OP_MAY}        {printf("\nLexico --> Operador Mayor: %s\n", yytext);return OP_MAY;}
-{OP_COMP}       {printf("\nLexico --> Operador Igual: %s\n", yytext);return OP_COMP;}
-{OP_MEN_IGU}    {printf("\nLexico --> Operador Menor Igual: %s\n", yytext);return OP_MEN_IGU;}
-{OP_MAY_IGU}    {printf("\nLexico --> Operador Mayor Igual: %s\n", yytext);return OP_MAY_IGU;}
-{FIB}           {printf("\nLexico -->FIB: %s\n", yytext);return FIB;}
-{ID}			{printf("\nLexico -->Identificador: %s\n", yytext);yylval.strVal = strdup(yytext);return ID;}
-{CTE}           {printf("\nLexico -->Cte Int: %s\n", yytext);
+{OP_MEN}        {return OP_MEN;}
+{OP_MAY}        {return OP_MAY;}
+{OP_COMP}       {return OP_COMP;}
+{OP_MEN_IGU}    {return OP_MEN_IGU;}
+{OP_MAY_IGU}    {return OP_MAY_IGU;}
+{FIB}           {return FIB;}
+{ID}			{yylval.strVal = strdup(yytext);return ID;}
+{CTE}           {
                     int value = atoi(strdup(yytext));
                     if( value > MAX_NUM_16_BITS ) {
                         printf("\nLexico --> El entero supera los limites permitidos. \n");
@@ -106,7 +106,7 @@ FIB             "FIB"
                         yylval.strVal = strdup(yytext);
                         return CTE;} }
 
-{CONST_REAL}    {printf("\nLexico --> Constante flotante: %s\n", yytext); 
+{CONST_REAL}    { 
                     if (atof(yytext) > LIMIT_FLOAT_SUP || atof(yytext) < LIMIT_FLOAT_INF){
                             printf( "\nLexico --> El real supera los limites permitidos. \n");
                             exit(1);
@@ -114,7 +114,7 @@ FIB             "FIB"
                         yylval.strVal = strdup(yytext);
                         return CONST_REAL; }}
 
-{CONST_STRING}  {printf("\nLexico --> Constante string: %s\n", yytext);
+{CONST_STRING}  {
                     if(strlen(yytext) > MAX_CHARACTERS){
                         printf( "\nLexico --> El string supera los limites permitidos. \n");
                         exit(1);

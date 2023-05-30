@@ -13,7 +13,6 @@ typedef struct sNodeS
 
 typedef tNodeS* tStack;
 
-
 void createStack(tStack*p);
 int pushStack(tStack*p,char*d);
 int popStack(tStack* p,char* d);
