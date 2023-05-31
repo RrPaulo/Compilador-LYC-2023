@@ -111,6 +111,10 @@ int     sentInd=0,
 
 tStack pilaNroTerceto;
 tStack pilaExp;
+tStack pilaTerm;
+tStack pilaFact;
+tStack pilaComparacion;
+
 tCola  colaTercetos;
 
 int contList;
@@ -125,7 +129,7 @@ extern int yylineno;
 
 
 /* Line 189 of yacc.c  */
-#line 129 "y.tab.c"
+#line 133 "y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -238,14 +242,14 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 55 "Sintactico.y"
+#line 59 "Sintactico.y"
 
     char* strVal;
 
 
 
 /* Line 214 of yacc.c  */
-#line 249 "y.tab.c"
+#line 253 "y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -257,7 +261,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 261 "y.tab.c"
+#line 265 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -534,7 +538,7 @@ static const yytype_uint8 yyprhs[] =
       20,    21,    26,    31,    36,    40,    44,    46,    48,    50,
       52,    57,    62,    67,    75,    83,    95,    97,   101,   105,
      108,   112,   114,   116,   118,   120,   122,   124,   128,   132,
-     134,   138,   142,   144,   146,   148,   150,   152,   156,   161
+     134,   138,   142,   144,   146,   148,   150,   154,   156,   161
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -555,18 +559,18 @@ static const yytype_int8 yyrhs[] =
       38,    -1,    58,    -1,    57,     6,    58,    -1,    57,     8,
       58,    -1,    59,    -1,    58,     7,    59,    -1,    58,     9,
       59,    -1,     4,    -1,     3,    -1,    12,    -1,    13,    -1,
-      60,    -1,    10,    57,    11,    -1,    39,    10,     3,    11,
+      10,    57,    11,    -1,    60,    -1,    39,    10,     3,    11,
       -1,    39,    10,     4,    11,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    98,    98,    99,   102,   103,   104,   105,   106,   107,
-     110,   110,   121,   137,   138,   141,   142,   145,   146,   147,
-     150,   153,   154,   157,   160,   162,   166,   167,   174,   180,
-     191,   203,   204,   205,   206,   207,   211,   212,   218,   228,
-     229,   236,   245,   246,   247,   248,   249,   250,   254,   255
+       0,   102,   102,   103,   106,   107,   108,   109,   110,   111,
+     114,   114,   125,   141,   142,   145,   146,   149,   150,   151,
+     154,   157,   158,   161,   164,   169,   173,   174,   182,   190,
+     197,   215,   216,   217,   218,   219,   223,   229,   237,   249,
+     256,   265,   276,   280,   284,   288,   292,   296,   300,   301
 };
 #endif
 
@@ -618,7 +622,7 @@ static const yytype_uint8 yyr2[] =
        0,     4,     4,     4,     3,     3,     1,     1,     1,     1,
        4,     4,     4,     7,     7,    11,     1,     3,     3,     2,
        3,     1,     1,     1,     1,     1,     1,     3,     3,     1,
-       3,     3,     1,     1,     1,     1,     1,     3,     4,     4
+       3,     3,     1,     1,     1,     1,     3,     1,     4,     4
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -629,10 +633,10 @@ static const yytype_uint8 yydefact[] =
        0,    10,     0,     0,     0,     0,     0,     0,     2,     4,
        5,     6,     7,     8,     9,     0,     0,     0,     0,     0,
        0,     1,     3,     0,    43,    42,     0,    44,    45,     0,
-       0,     0,    26,     0,    36,    39,    46,     0,    16,     0,
+       0,     0,    26,     0,    36,    39,    47,     0,    16,     0,
        0,     0,     0,     0,    11,     0,    29,     0,     0,     0,
        0,     0,     0,    31,    32,    33,    34,    35,     0,     0,
-       0,     0,    12,     0,     0,     0,    20,    21,    22,    47,
+       0,     0,    12,     0,     0,     0,    20,    21,    22,    46,
        0,     0,     0,    27,    28,    37,    38,    30,    40,    41,
        0,     0,    17,    18,    19,    14,    15,    48,    49,     0,
        0,    13,    23,    24,     0,     0,     0,    25
@@ -1535,21 +1539,21 @@ yyreduce:
         case 3:
 
 /* Line 1455 of yacc.c  */
-#line 99 "Sintactico.y"
+#line 103 "Sintactico.y"
     {sentInd=prgInd;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 110 "Sintactico.y"
+#line 114 "Sintactico.y"
     {asignacionInd = crearTerceto(yytext,"_","_",tercetosCreados);}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 110 "Sintactico.y"
+#line 114 "Sintactico.y"
     {
                                                            
                                                             char auxAsig[LONG_TERCETO];
@@ -1563,7 +1567,7 @@ yyreduce:
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 121 "Sintactico.y"
+#line 125 "Sintactico.y"
     {
                                                 char dataType[100];
                                                 char variable[100];
@@ -1583,64 +1587,66 @@ yyreduce:
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 137 "Sintactico.y"
+#line 141 "Sintactico.y"
     {pushStack(&stackVar,"*");}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 138 "Sintactico.y"
+#line 142 "Sintactico.y"
     {pushStack(&stackVar,"*");}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 141 "Sintactico.y"
+#line 145 "Sintactico.y"
     {crearTerceto(yytext,"_","_",tercetosCreados);pushStack(&stackVar,(yyvsp[(3) - (3)].strVal));}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 142 "Sintactico.y"
+#line 146 "Sintactico.y"
     {crearTerceto(yytext,"_","_",tercetosCreados);pushStack(&stackVar,(yyvsp[(1) - (1)].strVal));}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 145 "Sintactico.y"
+#line 149 "Sintactico.y"
     {pushStack(&stackDataTypeDecVar,"INTEGER");}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 146 "Sintactico.y"
+#line 150 "Sintactico.y"
     {pushStack(&stackDataTypeDecVar,"FLOAT");}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 147 "Sintactico.y"
+#line 151 "Sintactico.y"
     {pushStack(&stackDataTypeDecVar,"STRING");}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 160 "Sintactico.y"
+#line 164 "Sintactico.y"
     {     int t = desapilarNroTerceto();
-                                                escribirTercetoActualEnAnterior(tercetosCreados,t);}
+                                                printf("A ver que numero trae el desapilar %d\n", t);
+                                                escribirTercetoActualEnAnterior(tercetosCreados,t);
+                                                }
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 162 "Sintactico.y"
+#line 169 "Sintactico.y"
     {int t = desapilarNroTerceto();
                                                                 escribirTercetoActualEnAnterior(tercetosCreados,t);}
     break;
@@ -1648,18 +1654,19 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 166 "Sintactico.y"
+#line 173 "Sintactico.y"
     {condicionInd = comparacionInd;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 167 "Sintactico.y"
+#line 174 "Sintactico.y"
     {
-                                                            char condicionAux [LONG_TERCETO];
-                                                            char comparacionAux [LONG_TERCETO];
-           
+                                                        char condicionAux [LONG_TERCETO];
+                                                        char comparacionAux [LONG_TERCETO];
+                                                        sprintf(condicionAux,"[%d]",condicionInd );
+                                                        sprintf(comparacionAux, "[%d]", comparacionInd);
                                                         condicionInd = crearTerceto("AND", condicionAux , comparacionAux,tercetosCreados );
                                                        
                                                         }
@@ -1668,11 +1675,13 @@ yyreduce:
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 174 "Sintactico.y"
+#line 182 "Sintactico.y"
     {
-                                                            char condicionAux [LONG_TERCETO];
-                                                            char comparacionAux [LONG_TERCETO];
-                                                            condicionInd = crearTerceto("OR", condicionAux , comparacionAux,tercetosCreados );
+                                                        char condicionAux [LONG_TERCETO];
+                                                        char comparacionAux [LONG_TERCETO];
+                                                        sprintf(condicionAux,"[%d]",condicionInd);
+                                                        sprintf(comparacionAux, "[%d]", comparacionInd);
+                                                        condicionInd = crearTerceto("OR", condicionAux , comparacionAux,tercetosCreados );
                                                             
                                                         }
     break;
@@ -1680,13 +1689,9 @@ yyreduce:
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 181 "Sintactico.y"
+#line 191 "Sintactico.y"
     {
-                                                            char condicionAux [LONG_TERCETO];
-                                                            char comparacionAux [LONG_TERCETO];
-                                                            sprintf(condicionAux,"[%d]",condicionInd );
-                                                            sprintf(comparacionAux, "[%d]", comparacionInd);
-                                                            condicionInd = crearTerceto("NOT", condicionAux , comparacionAux,tercetosCreados );
+                                                           
                                                            
                                                         }
     break;
@@ -1694,142 +1699,215 @@ yyreduce:
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 191 "Sintactico.y"
+#line 197 "Sintactico.y"
     {
                 char exp1[30];
                 char exp2[30];
-                //popStack(&pilaExp,exp1);
-                //popStack(&pilaExp,exp2);
+                popStack(&pilaExp,exp1);
+                popStack(&pilaExp,exp2);//Ver que esta llegando aca
                 printf ("A ver la comparacion %s %s \n",exp1, exp2);
-                crearTerceto("CMP",exp1,exp2,tercetosCreados);
-                comparacionInd = crearTerceto(comparador,"_","_" ,tercetosCreados);
+                comparacionInd=crearTerceto("CMP",exp1,exp2,tercetosCreados);
+              
+                int t = crearTerceto(comparador,"_","_" ,tercetosCreados);
                 apilarNroTerceto(comparacionInd);
+                printf("A ver t %d\n",t);
+                char tString [10];
+                itoa(t,tString,10);
+                printf("A ver tSTRING %s\n",tString);
+                //pushStack(&pilaComparacion,tString);
         }
+    break;
+
+  case 31:
+
+/* Line 1455 of yacc.c  */
+#line 215 "Sintactico.y"
+    {strcpy(comparador, "BGE");}
+    break;
+
+  case 32:
+
+/* Line 1455 of yacc.c  */
+#line 216 "Sintactico.y"
+    {strcpy(comparador, "BLE");}
+    break;
+
+  case 33:
+
+/* Line 1455 of yacc.c  */
+#line 217 "Sintactico.y"
+    {strcpy(comparador,"BNE" );}
+    break;
+
+  case 34:
+
+/* Line 1455 of yacc.c  */
+#line 218 "Sintactico.y"
+    {strcpy(comparador,"BGT");}
+    break;
+
+  case 35:
+
+/* Line 1455 of yacc.c  */
+#line 219 "Sintactico.y"
+    {strcpy(comparador, "BLT");}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 211 "Sintactico.y"
-    {expInd = termInd;}
+#line 223 "Sintactico.y"
+    {
+                                                        expInd = termInd;
+                                                        char expIndString [10];
+                                                        itoa(expInd,expIndString,10);
+                                                        pushStack(&pilaExp,expIndString);}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 212 "Sintactico.y"
+#line 229 "Sintactico.y"
     {                        char auxTer[LONG_TERCETO];
                                                             char auxExp[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxExp,"[%d]",expInd);
                                                             expInd = crearTerceto("OP_SUMA",auxExp,auxTer,tercetosCreados);
                                                             char expIndString [10];
                                                             itoa(expInd,expIndString,10);
-                                                            popStack(&pilaExp,expIndString); }
+                                                            pushStack(&pilaExp,expIndString); }
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 218 "Sintactico.y"
+#line 237 "Sintactico.y"
     {
                                                             char auxTer[LONG_TERCETO];
                                                             char auxExp[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxExp,"[%d]",expInd);
                                                             expInd = crearTerceto("OP_RESTA",auxExp,auxTer,tercetosCreados);
                                                             char expIndString [10];
                                                             itoa(expInd,expIndString,10);
-                                                            popStack(&pilaExp,expIndString);}
+                                                            pushStack(&pilaExp,expIndString);}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 228 "Sintactico.y"
-    {termInd = factInd ;}
+#line 249 "Sintactico.y"
+    {
+                                                            termInd = factInd;
+                                                            char termIndString [10];
+                                                            itoa(expInd,termIndString,10);
+                                                            pushStack(&pilaTerm,termIndString);
+                                                          }
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 229 "Sintactico.y"
+#line 256 "Sintactico.y"
     {                             char auxTer[LONG_TERCETO];
                                                             char auxFac[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxFac,"[%d]",factInd);
                                                             termInd = crearTerceto("OP_MULT",auxTer,auxFac,tercetosCreados);
                                                             char termIndString [10];
                                                             itoa(termInd,termIndString,10);
-                                                            popStack(&pilaExp,termIndString);}
+                                                            pushStack(&pilaTerm,termIndString);}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 236 "Sintactico.y"
+#line 265 "Sintactico.y"
     {                             char auxTer[LONG_TERCETO];
                                                             char auxFac[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxFac,"[%d]",factInd);
                                                             termInd = crearTerceto("OP_DIV",auxTer,auxFac,tercetosCreados);
                                                             char termIndString [10];
                                                             itoa(termInd,termIndString,10);
-                                                            popStack(&pilaExp,termIndString);}
+                                                            pushStack(&pilaTerm,termIndString);}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 245 "Sintactico.y"
-    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
+#line 276 "Sintactico.y"
+    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 246 "Sintactico.y"
-    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
+#line 280 "Sintactico.y"
+    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 247 "Sintactico.y"
-    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
+#line 284 "Sintactico.y"
+    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 248 "Sintactico.y"
-    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
+#line 288 "Sintactico.y"
+    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 249 "Sintactico.y"
-    {printf("   Fibonacci es Factor\n");}
+#line 292 "Sintactico.y"
+    {factInd = expInd;
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 250 "Sintactico.y"
-    {printf(" Expresion entre parentesis es Factor\n");}
+#line 296 "Sintactico.y"
+    {}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 254 "Sintactico.y"
+#line 300 "Sintactico.y"
     {printf("Sintactico --> Fibonacci\n");}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 255 "Sintactico.y"
+#line 301 "Sintactico.y"
     {printf("Sintactico --> Fibonacci\n");}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1833 "y.tab.c"
+#line 1911 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2041,7 +2119,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 257 "Sintactico.y"
+#line 303 "Sintactico.y"
 
 
 

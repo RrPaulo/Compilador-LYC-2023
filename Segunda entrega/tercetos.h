@@ -48,7 +48,7 @@ void escribirTercetosEnIntermedia()
     while(!colaVacia(&colaTercetos)){
       
         t_Terceto t;
-        sacarDeCola(&colaTercetos,&t,100);
+        sacarDeCola(&colaTercetos,&t,sizeof(t_Terceto));
         printf("Valores de la intermedia[%d] ( %s ; %s ; %s ) \n",t.numTerceto,t.posUno,t.posDos,t.posTres);
    
         fprintf(fpIntermedia,"[%d] ( %s ; %s ; %s ) \n",t.numTerceto,t.posUno,t.posDos,t.posTres);
@@ -65,8 +65,11 @@ int crearTerceto(char *c1, char*c2 ,char *c3,int nroT){
     strcpy(tercetos.posDos,c2);
     strcpy(tercetos.posTres,c3);
   
-    printf("%d Crear terceto %s,%s,%s \n",nroT,tercetos.posUno,tercetos.posDos,tercetos.posTres);
+    printf("%d Se pone en cola %s,%s,%s \n",nroT,tercetos.posUno,tercetos.posDos,tercetos.posTres);
     ponerEnCola(&colaTercetos,&tercetos,sizeof(tercetos));
+    //sacarDeCola(&colaTercetos,&tercetos,sizeof(tercetos));
+    //printf("%d SE SACA DE COLA %s,%s,%s \n",nroT,tercetos.posUno,tercetos.posDos,tercetos.posTres);
+    //ponerEnCola(&colaTercetos,&tercetos,sizeof(tercetos));
 
     return nroT;
 }
@@ -75,7 +78,8 @@ int crearTerceto(char *c1, char*c2 ,char *c3,int nroT){
 int apilarNroTerceto(int  nroTerceto)
 {
     char nroTercetoString [50];
-    itoa(nroTerceto,nroTercetoString,50);
+    sprintf(nroTercetoString,"[%d]",nroTerceto);
+    printf("A ver que APILAAAAAAAA %d %s \n",nroTerceto,nroTercetoString);
     return pushStack(&pilaNroTerceto,nroTercetoString);
     
 }
@@ -84,11 +88,12 @@ int desapilarNroTerceto()
 {   
     char * nroTerceto;
     popStack(&pilaNroTerceto, nroTerceto);
-    return *nroTerceto;
+    printf("A ver que desapila %d\n",atoi(nroTerceto));
+    return atoi(nroTerceto);
 }
 
 
-void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado)
+void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado) // 51 50
 {
     tCola  aux;
     crearCola(&aux);
@@ -107,6 +112,6 @@ void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado)
         ponerEnCola(&aux,&terceto,sizeof(terceto));
     }
     
-    tCola colaTercetos=aux;
+     colaTercetos=aux;
 
 }

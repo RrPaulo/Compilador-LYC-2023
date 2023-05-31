@@ -72,8 +72,8 @@ Gramática
    42       | CTE
    43       | CONST_REAL
    44       | CONST_STRING
-   45       | fibonacci
-   46       | PA expresion PC
+   45       | PA expresion PC
+   46       | fibonacci
 
    47 fibonacci: FIB PA CTE PC
    48          | FIB PA ID PC
@@ -90,8 +90,8 @@ OP_SUM (261) 36
 OP_MUL (262) 39
 OP_RES (263) 37
 OP_DIV (264) 40
-PA (265) 19 20 21 22 23 24 46 47 48
-PC (266) 19 20 21 22 23 24 46 47 48
+PA (265) 19 20 21 22 23 24 45 47 48
+PC (266) 19 20 21 22 23 24 45 47 48
 CONST_REAL (267) 43
 CONST_STRING (268) 21 44
 LA (269) 11 22 23 24
@@ -158,13 +158,13 @@ comparacion (55)
 comparador (56)
     en la izquierda: 30 31 32 33 34, en la derecha: 29
 expresion (57)
-    en la izquierda: 35 36 37, en la derecha: 10 29 36 37 46
+    en la izquierda: 35 36 37, en la derecha: 10 29 36 37 45
 termino (58)
     en la izquierda: 38 39 40, en la derecha: 35 36 37 39 40
 factor (59)
     en la izquierda: 41 42 43 44 45 46, en la derecha: 38 39 40
 fibonacci (60)
-    en la izquierda: 47 48, en la derecha: 45
+    en la izquierda: 47 48, en la derecha: 46
 
 
 estado 0
@@ -426,7 +426,7 @@ estado 25
 
 estado 26
 
-   46 factor: PA . expresion PC
+   45 factor: PA . expresion PC
 
     CTE           desplazar e ir al estado 24
     ID            desplazar e ir al estado 25
@@ -537,9 +537,9 @@ estado 35
 
 estado 36
 
-   45 factor: fibonacci .
+   46 factor: fibonacci .
 
-    $default  reduce usando la regla 45 (factor)
+    $default  reduce usando la regla 46 (factor)
 
 
 estado 37
@@ -618,7 +618,7 @@ estado 45
 
    36 expresion: expresion . OP_SUM termino
    37          | expresion . OP_RES termino
-   46 factor: PA expresion . PC
+   45 factor: PA expresion . PC
 
     OP_SUM  desplazar e ir al estado 51
     OP_RES  desplazar e ir al estado 52
@@ -863,9 +863,9 @@ estado 68
 
 estado 69
 
-   46 factor: PA expresion PC .
+   45 factor: PA expresion PC .
 
-    $default  reduce usando la regla 46 (factor)
+    $default  reduce usando la regla 45 (factor)
 
 
 estado 70

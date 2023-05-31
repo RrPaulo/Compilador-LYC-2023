@@ -40,6 +40,10 @@ int     sentInd=0,
 
 tStack pilaNroTerceto;
 tStack pilaExp;
+tStack pilaTerm;
+tStack pilaFact;
+tStack pilaComparacion;
+
 tCola  colaTercetos;
 
 int contList;
@@ -158,32 +162,34 @@ ciclo:
 
 if:
         IF PA condicion PC LA programa LC {     int t = desapilarNroTerceto();
-                                                escribirTercetoActualEnAnterior(tercetosCreados,t);}
+                                                printf("A ver que numero trae el desapilar %d\n", t);
+                                                escribirTercetoActualEnAnterior(tercetosCreados,t);
+                                                }
+
         |IF PA condicion PC LA programa LC ELSE LA programa LC {int t = desapilarNroTerceto();
                                                                 escribirTercetoActualEnAnterior(tercetosCreados,t);};
 
 condicion:
         comparacion {condicionInd = comparacionInd;}
         |condicion AND comparacion{
-                                                            char condicionAux [LONG_TERCETO];
-                                                            char comparacionAux [LONG_TERCETO];
-           
+                                                        char condicionAux [LONG_TERCETO];
+                                                        char comparacionAux [LONG_TERCETO];
+                                                        sprintf(condicionAux,"[%d]",condicionInd );
+                                                        sprintf(comparacionAux, "[%d]", comparacionInd);
                                                         condicionInd = crearTerceto("AND", condicionAux , comparacionAux,tercetosCreados );
                                                        
                                                         }
         |condicion OR comparacion {
-                                                            char condicionAux [LONG_TERCETO];
-                                                            char comparacionAux [LONG_TERCETO];
-                                                            condicionInd = crearTerceto("OR", condicionAux , comparacionAux,tercetosCreados );
+                                                        char condicionAux [LONG_TERCETO];
+                                                        char comparacionAux [LONG_TERCETO];
+                                                        sprintf(condicionAux,"[%d]",condicionInd);
+                                                        sprintf(comparacionAux, "[%d]", comparacionInd);
+                                                        condicionInd = crearTerceto("OR", condicionAux , comparacionAux,tercetosCreados );
                                                             
                                                         };
         |NOT comparacion
          {
-                                                            char condicionAux [LONG_TERCETO];
-                                                            char comparacionAux [LONG_TERCETO];
-                                                            sprintf(condicionAux,"[%d]",condicionInd );
-                                                            sprintf(comparacionAux, "[%d]", comparacionInd);
-                                                            condicionInd = crearTerceto("NOT", condicionAux , comparacionAux,tercetosCreados );
+                                                           
                                                            
                                                         };
 
@@ -191,63 +197,103 @@ comparacion:
         expresion comparador expresion{
                 char exp1[30];
                 char exp2[30];
-                //popStack(&pilaExp,exp1);
-                //popStack(&pilaExp,exp2);
+                popStack(&pilaExp,exp1);
+                popStack(&pilaExp,exp2);//Ver que esta llegando aca
                 printf ("A ver la comparacion %s %s \n",exp1, exp2);
-                crearTerceto("CMP",exp1,exp2,tercetosCreados);
-                comparacionInd = crearTerceto(comparador,"_","_" ,tercetosCreados);
+                comparacionInd=crearTerceto("CMP",exp1,exp2,tercetosCreados);
+              
+                int t = crearTerceto(comparador,"_","_" ,tercetosCreados);
                 apilarNroTerceto(comparacionInd);
+                printf("A ver t %d\n",t);
+                char tString [10];
+                itoa(t,tString,10);
+                printf("A ver tSTRING %s\n",tString);
+                //pushStack(&pilaComparacion,tString);
         };
 
 comparador:
-        OP_MEN
-        |OP_MAY
-        |OP_COMP
-        |OP_MEN_IGU
-        |OP_MAY_IGU;
+        OP_MEN{strcpy(comparador, "BGE");}
+        |OP_MAY{strcpy(comparador, "BLE");}
+        |OP_COMP{strcpy(comparador,"BNE" );}
+        |OP_MEN_IGU{strcpy(comparador,"BGT");}
+        |OP_MAY_IGU{strcpy(comparador, "BLT");};
 
 
 expresion:
-         termino {expInd = termInd;}
+         termino {
+                                                        expInd = termInd;
+                                                        char expIndString [10];
+                                                        itoa(expInd,expIndString,10);
+                                                        pushStack(&pilaExp,expIndString);}
+
 	 |expresion OP_SUM termino {                        char auxTer[LONG_TERCETO];
                                                             char auxExp[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxExp,"[%d]",expInd);
                                                             expInd = crearTerceto("OP_SUMA",auxExp,auxTer,tercetosCreados);
                                                             char expIndString [10];
                                                             itoa(expInd,expIndString,10);
-                                                            popStack(&pilaExp,expIndString); }
+                                                            pushStack(&pilaExp,expIndString); }
 	 |expresion OP_RES termino {
                                                             char auxTer[LONG_TERCETO];
                                                             char auxExp[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxExp,"[%d]",expInd);
                                                             expInd = crearTerceto("OP_RESTA",auxExp,auxTer,tercetosCreados);
                                                             char expIndString [10];
                                                             itoa(expInd,expIndString,10);
-                                                            popStack(&pilaExp,expIndString);}
+                                                            pushStack(&pilaExp,expIndString);}
 	 ;
 
 termino: 
-       factor {termInd = factInd ;}
+       factor {
+                                                            termInd = factInd;
+                                                            char termIndString [10];
+                                                            itoa(expInd,termIndString,10);
+                                                            pushStack(&pilaTerm,termIndString);
+                                                          }
+       
        |termino OP_MUL factor {                             char auxTer[LONG_TERCETO];
                                                             char auxFac[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxFac,"[%d]",factInd);
                                                             termInd = crearTerceto("OP_MULT",auxTer,auxFac,tercetosCreados);
                                                             char termIndString [10];
                                                             itoa(termInd,termIndString,10);
-                                                            popStack(&pilaExp,termIndString);}
+                                                            pushStack(&pilaTerm,termIndString);}
                                                             
        |termino OP_DIV factor {                             char auxTer[LONG_TERCETO];
                                                             char auxFac[LONG_TERCETO];
+                                                            sprintf(auxTer,"[%d]",termInd);
+                                                            sprintf(auxFac,"[%d]",factInd);
                                                             termInd = crearTerceto("OP_DIV",auxTer,auxFac,tercetosCreados);
                                                             char termIndString [10];
                                                             itoa(termInd,termIndString,10);
-                                                            popStack(&pilaExp,termIndString);}
+                                                            pushStack(&pilaTerm,termIndString);}
        ;
 
 factor: 
-      ID                {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
-      | CTE             {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
-      | CONST_REAL      {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
-      | CONST_STRING    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);}
-      | fibonacci       {printf("   Fibonacci es Factor\n");}
-      | PA expresion PC {printf(" Expresion entre parentesis es Factor\n");}
+      ID                {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
+      | CTE             {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
+      | CONST_REAL      {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
+      | CONST_STRING    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
+      | PA expresion PC {factInd = expInd;
+                        char factIndString [10];
+                        itoa(termInd,factIndString,10);
+                        pushStack(&pilaFact,factIndString);}
+      | fibonacci       {}
      	;
 
 fibonacci: 

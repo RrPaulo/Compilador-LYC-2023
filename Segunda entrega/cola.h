@@ -109,5 +109,6 @@ int sacarDeCola(tCola *c, void *d, unsigned cantBytes)
     if(c->priC == NULL)
         c->ultC = NULL;
     return 1;
+
 }
 
