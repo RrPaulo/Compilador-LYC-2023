@@ -158,16 +158,37 @@ write:
           |WRITE PA CONST_STRING PC; 
 
 ciclo: 
-        CICLO PA condicion PC LA programa LC ;
+        CICLO {cicloInd = crearTerceto("InicioCiclo","_","_",tercetosCreados);
+                            apilarNroTerceto(cicloInd);} 
+        PA condicion PC LA programa LC {
+                                                int t = desapilarNroTerceto();
+                                                char auxT [LONG_TERCETO]; 
+                                                escribirTercetoActualEnAnterior(tercetosCreados+1,t);
+                                                t = desapilarNroTerceto(); 
+                                                sprintf(auxT,"[%d]",t);
+                                                crearTerceto("BI","_",auxT,tercetosCreados);
+        };
 
 if:
-        IF PA condicion PC LA programa LC {     int t = desapilarNroTerceto();
-                                                printf("A ver que numero trae el desapilar %d\n", t);
-                                                escribirTercetoActualEnAnterior(tercetosCreados,t);
+        IF PA condicion PC LA programa LC {     while(!emptyStack(&pilaComparacion)){
+                                                        char  t [30];
+                                                        printf("A ver que tiene tercetocreado %d\n", tercetosCreados);
+                                                        popStack(&pilaComparacion,t);
+                                                        printf("A ver que numero trae el desapilar %s\n", t);
+                                                        escribirTercetoActualEnAnterior(tercetosCreados,atoi(t));
+                                                 }
+
+                                                
                                                 }
 
-        |IF PA condicion PC LA programa LC ELSE LA programa LC {int t = desapilarNroTerceto();
-                                                                escribirTercetoActualEnAnterior(tercetosCreados,t);};
+        |IF PA condicion PC LA programa LC ELSE LA programa LC {
+                                                        while(!emptyStack(&pilaComparacion)){
+                                                        char  t [30];
+                                                        printf("A ver que tiene tercetocreado %d\n", tercetosCreados);
+                                                        popStack(&pilaComparacion,t);
+                                                        printf("A ver que numero trae el desapilar %s\n", t);
+                                                        escribirTercetoActualEnAnterior(tercetosCreados,atoi(t));
+                                                 }};
 
 condicion:
         comparacion {condicionInd = comparacionInd;}
@@ -187,9 +208,10 @@ condicion:
                                                         condicionInd = crearTerceto("OR", condicionAux , comparacionAux,tercetosCreados );
                                                             
                                                         };
-        |NOT comparacion
-         {
-                                                           
+        |NOT comparacion{
+                                                        char comparacionAux [LONG_TERCETO];
+                                                        sprintf(comparacionAux, "[%d]", comparacionInd);
+                                                        condicionInd = crearTerceto("NOT", comparacionAux,"_",tercetosCreados );
                                                            
                                                         };
 
@@ -203,12 +225,12 @@ comparacion:
                 comparacionInd=crearTerceto("CMP",exp1,exp2,tercetosCreados);
               
                 int t = crearTerceto(comparador,"_","_" ,tercetosCreados);
-                apilarNroTerceto(comparacionInd);
+                apilarNroTerceto(t);
                 printf("A ver t %d\n",t);
                 char tString [10];
                 itoa(t,tString,10);
                 printf("A ver tSTRING %s\n",tString);
-                //pushStack(&pilaComparacion,tString);
+                pushStack(&pilaComparacion,tString);
         };
 
 comparador:
@@ -277,15 +299,22 @@ factor:
                         char factIndString [10];
                         itoa(termInd,factIndString,10);
                         pushStack(&pilaFact,factIndString);}
-      | CTE             {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+      | CTE             {
+                        insertNumber(&symbolTable,$1);
+                        factInd = crearTerceto(yytext,"_","_",tercetosCreados);
                         char factIndString [10];
                         itoa(termInd,factIndString,10);
                         pushStack(&pilaFact,factIndString);}
-      | CONST_REAL      {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+
+      | CONST_REAL      {
+                        insertNumber(&symbolTable,$1);
+                        factInd = crearTerceto(yytext,"_","_",tercetosCreados);
                         char factIndString [10];
                         itoa(termInd,factIndString,10);
                         pushStack(&pilaFact,factIndString);}
-      | CONST_STRING    {factInd = crearTerceto(yytext,"_","_",tercetosCreados);
+      | CONST_STRING    {
+                        insertString(&symbolTable, $1);
+                        factInd = crearTerceto(yytext,"_","_",tercetosCreados);
                         char factIndString [10];
                         itoa(termInd,factIndString,10);
                         pushStack(&pilaFact,factIndString);}
@@ -317,8 +346,12 @@ int main(int argc, char *argv[])
     createStack(&stackVar);
     createStack(&stackDataTypeDecVar);
 
+    //Para intermedia
     createStack(&pilaNroTerceto);
     createStack(&pilaExp);
+    createStack(&pilaTerm);
+    createStack(&pilaFact);
+    createStack(&pilaComparacion);
     crearCola(&colaTercetos);
 
     abrirIntermedia();

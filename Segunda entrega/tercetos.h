@@ -79,7 +79,7 @@ int apilarNroTerceto(int  nroTerceto)
 {
     char nroTercetoString [50];
     sprintf(nroTercetoString,"[%d]",nroTerceto);
-    printf("A ver que APILAAAAAAAA %d %s \n",nroTerceto,nroTercetoString);
+    printf("A ver que APILAAAAAAAAAAAAAAAAAAAA %d %s \n",nroTerceto,nroTercetoString);
     return pushStack(&pilaNroTerceto,nroTercetoString);
     
 }
@@ -88,12 +88,15 @@ int desapilarNroTerceto()
 {   
     char * nroTerceto;
     popStack(&pilaNroTerceto, nroTerceto);
-    printf("A ver que desapila %d\n",atoi(nroTerceto));
-    return atoi(nroTerceto);
+    printf("A ver que desapilaAAAAAAAAAAAAAAAAAAAA %s\n",nroTerceto);
+    char  subtext [strlen(nroTerceto-2)];
+    strncpy(subtext,&nroTerceto[1],strlen(nroTerceto)-1);
+    printf("A ver que tiene subtext %s\n",subtext);
+    return atoi(subtext);
 }
 
 
-void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado) // 51 50
+void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado) // 42 26 -- 22
 {
     tCola  aux;
     crearCola(&aux);
