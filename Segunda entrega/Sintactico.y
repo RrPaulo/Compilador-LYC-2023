@@ -172,7 +172,6 @@ ciclo:
 if:
         IF PA condicion PC LA programa LC {     while(!emptyStack(&pilaComparacion)){
                                                         char  t [30];
-                                                        printf("A ver que tiene tercetocreado %d\n", tercetosCreados);
                                                         popStack(&pilaComparacion,t);
                                                         printf("A ver que numero trae el desapilar %s\n", t);
                                                         escribirTercetoActualEnAnterior(tercetosCreados,atoi(t));
@@ -184,7 +183,6 @@ if:
         |IF PA condicion PC LA programa LC ELSE LA programa LC {
                                                         while(!emptyStack(&pilaComparacion)){
                                                         char  t [30];
-                                                        printf("A ver que tiene tercetocreado %d\n", tercetosCreados);
                                                         popStack(&pilaComparacion,t);
                                                         printf("A ver que numero trae el desapilar %s\n", t);
                                                         escribirTercetoActualEnAnterior(tercetosCreados,atoi(t));
@@ -220,7 +218,7 @@ comparacion:
                 char exp1[30];
                 char exp2[30];
                 popStack(&pilaExp,exp1);
-                popStack(&pilaExp,exp2);//Ver que esta llegando aca
+                popStack(&pilaExp,exp2);
                 printf ("A ver la comparacion %s %s \n",exp1, exp2);
                 comparacionInd=crearTerceto("CMP",exp1,exp2,tercetosCreados);
               

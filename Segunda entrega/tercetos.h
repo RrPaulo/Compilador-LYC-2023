@@ -67,10 +67,6 @@ int crearTerceto(char *c1, char*c2 ,char *c3,int nroT){
   
     printf("%d Se pone en cola %s,%s,%s \n",nroT,tercetos.posUno,tercetos.posDos,tercetos.posTres);
     ponerEnCola(&colaTercetos,&tercetos,sizeof(tercetos));
-    //sacarDeCola(&colaTercetos,&tercetos,sizeof(tercetos));
-    //printf("%d SE SACA DE COLA %s,%s,%s \n",nroT,tercetos.posUno,tercetos.posDos,tercetos.posTres);
-    //ponerEnCola(&colaTercetos,&tercetos,sizeof(tercetos));
-
     return nroT;
 }
 
@@ -79,7 +75,7 @@ int apilarNroTerceto(int  nroTerceto)
 {
     char nroTercetoString [50];
     sprintf(nroTercetoString,"[%d]",nroTerceto);
-    printf("A ver que APILAAAAAAAAAAAAAAAAAAAA %d %s \n",nroTerceto,nroTercetoString);
+    printf("A ver que apila %d %s \n",nroTerceto,nroTercetoString);
     return pushStack(&pilaNroTerceto,nroTercetoString);
     
 }
@@ -88,7 +84,7 @@ int desapilarNroTerceto()
 {   
     char * nroTerceto;
     popStack(&pilaNroTerceto, nroTerceto);
-    printf("A ver que desapilaAAAAAAAAAAAAAAAAAAAA %s\n",nroTerceto);
+    printf("A ver que desapilar %s\n",nroTerceto);
     char  subtext [strlen(nroTerceto-2)];
     strncpy(subtext,&nroTerceto[1],strlen(nroTerceto)-1);
     printf("A ver que tiene subtext %s\n",subtext);
