@@ -102,7 +102,8 @@ void generarAssembler();
 %%
 start:
         programa{
-                //generarAssembler();
+                escribirTercetosEnIntermedia();
+                generarAssembler();
                 };
 
 programa:
@@ -171,6 +172,7 @@ ciclo:
                                                 int t = desapilarNroTerceto();
                                                 char auxT [LONG_TERCETO]; 
                                                 escribirTercetoActualEnAnterior(tercetosCreados+1,t);
+                                                 t = desapilarNroTerceto();
                                                 sprintf(auxT,"[%d]",t);
                                                 crearTerceto("BI","_",auxT,tercetosCreados);
         };
@@ -375,15 +377,10 @@ int main(int argc, char *argv[])
 
     abrirIntermedia();
     yyparse();
-   
-    //Generacion de intermedia
-    
-    escribirTercetosEnIntermedia();
-    deleteTable(&symbolTable);
 
-    printf("\n Generacion de la intermedia finalizado \n\n");
+    deleteTable(&symbolTable);
     printf("\n Compilacion exitosaaa \n");
-    fclose(fpIntermedia);
+   
     fclose(yyin);
     return 0;
 }
@@ -395,9 +392,10 @@ int yyerror(void)
 
 //////////////////////////////////////GENERAR ASSEMBLER///////////////////////////////////////////
 void generarAssembler(){
+FILE * fpInterm;
 char idWhile[200];
 int contWhile=0;
-fpIntermedia = fopen(INTERMEDIA_TXT,"rt");
+fpInterm = fopen("intermedia.txt","rt");
 fpTabla = fopen("tabla_de_simbolos.txt","rt");
 fpAss = fopen("Assembler_generado.asm","wt");
 
@@ -412,35 +410,42 @@ tStack pWhile;
 createStack(&pAss);
 createStack(&pWhile);
 
-
-fprintf(fpAss,  "include macros2.asm");
-fprintf(fpAss,  "\ninclude number.asm");
+fprintf(fpAss,  "include macros2.asm\n");
+fprintf(fpAss,  "include number.asm\n");
 fprintf(fpAss, ".MODEL LARGE\n.STACK 200h\n.386\n.DATA\n\n");
+
+//Pegar la tabla de simbolos en el archivo assembler 
 char linea[1000];
 int lineasignorar = 0;
-while(lineasignorar<6)
+while(lineasignorar<5)
 {
         fgets(linea, sizeof(linea),fpTabla); // Para que se saltee las primeras 5 lineas de la tabla de simbolos
         lineasignorar++;
 }
 
-while(fgets(linea, sizeof(linea),fpTabla)){
+while(fgets(linea, sizeof(linea),fpTabla) && !strstr(linea,"____")){
 
-    char nombre[25];
-    char tipo[14];
-    char valor[25];
-    char longitud[10];   
-    sscanf(linea,"%s%s%s%s",nombre,tipo, valor,longitud);
-    printf("Vamos a ver que trajo la LINEAAAA %s \n",linea);
-    printf("A ver que trajo nombre %s,%s,%s,%s\n",nombre,tipo,valor,longitud);
+    char nombre[50];
+    char tipo[27];
+    char valor[50];
+    char longitud[20];   
+    printf("Vamos a ver que trajo la LINEA %s \n",linea);
+    sscanf(linea, "|%49[^|]|%26[^|]|%49[^|]|%19[^|]|", nombre, tipo, valor, longitud);
+    printf("A ver como esta cada columna %s %s %s %s\n",nombre,tipo,valor,longitud);
+    printf("valor %c\n",valor[0]);
+   
+    if(strstr(tipo,"STRING") != NULL){
 
-    if(strcmp(tipo,"STRING") == 0){
-
-    fprintf(fpAss,"%-20s db\t\t %-30s, \'$\', %s dup (?)\n",nombre,valor,"14");
+        if(valor[0] ==' ')
+        {
+             valor[0] = '?';
+            valor[1] = '\0';   
+        }
+        fprintf(fpAss,"%-20s db\t\t %-30s, \'$\', %s dup (?)\n",nombre,valor,"14");
 
     }else 
     {
-        if( strlen(valor)>1 && valor[0] =='-'){
+        if( strlen(valor)>1 && valor[0] ==' '){
             valor[0] = '?';
             valor[1] = '\0';
           }
@@ -455,7 +460,7 @@ fprintf(fpAss,  "\nMOV EAX,@DATA");
 fprintf(fpAss,  "\nMOV DS,EAX");
 fprintf(fpAss,  "\nMOV ES,EAX;\n\n");
 
-while(fgets(linea, sizeof(linea),fpIntermedia)){
+while(fgets(linea, sizeof(linea),fpInterm)){
      char p0[200];
      char p1[200];
      char p2[200];
@@ -517,15 +522,93 @@ while(fgets(linea, sizeof(linea),fpIntermedia)){
         fprintf(fpAss,"FMUL\n");
     }
 
+     if(strcmp("CMP",p1) == 0 ){
+         char st[200];
+        popStack(&pAss,st);
+        fprintf(fpAss,"FLD %s\n",st);
+        popStack(&pAss,st);       
+        fprintf(fpAss,"FLD %s\n",st); 
+        fprintf(fpAss,"FXCH\n"); 
+        fprintf(fpAss,"FCOM\n");
+        fprintf(fpAss,"FSTSW AX\n");
+        fprintf(fpAss,"SAHF\n");
+        fprintf(fpAss,"FFREE\n");
+    }
+
+    if(strcmp("CMPWH",p1) == 0 ){
+        int i=0;
+        char st[200];
+        tStack auxP;
+        createStack(&auxP);
+        for (i=0 ; i < contWhile ; i++){
+            popStack(&pAss,st); 
+            fprintf(fpAss,"FLD %s\n",st) ;   
+        }
+        char etWhile[200];
+        pushStack(&pWhile,etWhile);
+        fprintf(fpAss,"%s\n",etWhile);
+        fprintf(fpAss,"FLD %s\n",idWhile);
+        fprintf(fpAss,"FCOMPP\n");  
+        fprintf(fpAss,"FSTSW AX\n");
+        fprintf(fpAss,"SAHF\n");
+        
+        }
+//Pasaje de los saltos a assembler
+   if(strcmp ("BNE",p1)==0) {
+        char et[10];
+        sscanf(p3,"%[^ ]",et);
+        fprintf(fpAss,"JNE %s\n",et);
+
+    }
+
+    if(strcmp ("BLT",p1)==0) {
+         char et[10];
+        sscanf(p3,"%[^ ]",et);
+        fprintf(fpAss,"JB %s\n",et);
+    }
+
+    if(strcmp ("BLE",p1)==0) {
+        char et[10];
+        sscanf(p3,"%[^ ]",et);
+        fprintf(fpAss,"JNA %s\n",et);
+      
+    }
+
+    if(strcmp ("BGT",p1)==0) {
+           char et[10];
+        sscanf(p3,"%[^ ]",et);
+          fprintf(fpAss,"JA %s\n",et);
+       
+    }
+
+    if(strcmp ("BGE",p1)==0) {
+        char et[10];
+        sscanf(p3,"%[^ ]",et);
+        fprintf(fpAss,"JAE %s\n",et);
+      
+    }
+        
+    if(strcmp ("BEQ",p1)==0) {
+        char et[10];
+        sscanf(p3,"%[^ ]",et);
+        fprintf(fpAss,"JE %s\n",et);
+   
+    }
+
+    if(strcmp("BI", p1) == 0){
+        char et[10];
+     
+        sscanf(p3,"%[^ ]",et);
+      
+        fprintf(fpAss,"JMP %s\n",et);
+
+    }
 
 }
-
-
 
 fprintf(fpAss,  "\nmov ax,4c00h");
 fprintf(fpAss,  "\nint 21h");
 fprintf(fpAss,  "\nEnd");
-
 
 ///REVISAR
 fclose(fpTabla);

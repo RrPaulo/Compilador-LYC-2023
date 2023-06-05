@@ -81,13 +81,18 @@ int insertString(tList *p, char* lex)
 {
     int result = -1;
     char name[100];
+    char comilla[100];
 
     char* newName = deleteCharacter(lex);
 
     strcpy(name, "_");
     strcat(name, newName);
 
-    result = insertOrder(p, name, "STRING", newName, strlen(newName));
+    strcpy(comilla, "\"");
+    strcat(comilla,newName);
+    strcat(comilla,"\"");
+
+    result = insertOrder(p, name, "STRING", comilla, strlen(newName));
 
     if(result == DUPLICATE){
         printf("Lexema %s ya se ingreso en la tabla de simbolos\n",lex);
