@@ -102,8 +102,7 @@ void generarAssembler();
 %%
 start:
         programa{
-                escribirTercetosEnIntermedia();
-                generarAssembler();
+                
                 };
 
 programa:
@@ -356,13 +355,12 @@ fibonacci:
 int main(int argc, char *argv[])
 {
 
-   //Generacion de tabla de simbolos
     if((yyin = fopen(argv[1], "rt"))==NULL)
     {
         printf("\nNo se puede abrir el archivo de prueba: %s\n", argv[1]);    
     }
     printf("\n Comienzo de la compilacion \n\n");
-
+    //Generacion de tabla de simbolos
     createList(&symbolTable);
     createStack(&stackVar);
     createStack(&stackDataTypeDecVar);
@@ -376,9 +374,12 @@ int main(int argc, char *argv[])
     crearCola(&colaTercetos);
 
     abrirIntermedia();
+    
     yyparse();
-
-    deleteTable(&symbolTable);
+    deleteTable(&symbolTable);  
+    escribirTercetosEnIntermedia();
+    generarAssembler();
+    
     printf("\n Compilacion exitosaaa \n");
    
     fclose(yyin);
@@ -399,9 +400,20 @@ fpInterm = fopen("intermedia.txt","rt");
 fpTabla = fopen("tabla_de_simbolos.txt","rt");
 fpAss = fopen("Assembler_generado.asm","wt");
 
-if(!fpAss || !fpTabla || !fpAss)
+if(!fpAss )
     {
-        printf("Error en alguna apertura de los archivos, por favor corrabore");
+        printf("Error en el archivo de assembler");
+        return;
+    }
+    
+if( !fpTabla )
+    {
+        printf("Error en la apertura de la tabla de simbolos");
+        return;
+    }
+if( !fpInterm)
+    {
+        printf("Error en la apertura del archivo intermedia");
         return;
     }
 
@@ -429,11 +441,10 @@ while(fgets(linea, sizeof(linea),fpTabla) && !strstr(linea,"____")){
     char tipo[27];
     char valor[50];
     char longitud[20];   
-    printf("Vamos a ver que trajo la LINEA %s \n",linea);
+    //printf("Vamos a ver que trajo la LINEA %s \n",linea);
     sscanf(linea, "|%49[^|]|%26[^|]|%49[^|]|%19[^|]|", nombre, tipo, valor, longitud);
-    printf("A ver como esta cada columna %s %s %s %s\n",nombre,tipo,valor,longitud);
-    printf("valor %c\n",valor[0]);
-   
+    //printf("A ver como esta cada columna %s %s %s %s\n",nombre,tipo,valor,longitud);
+  
     if(strstr(tipo,"STRING") != NULL){
 
         if(valor[0] ==' ')
@@ -466,7 +477,7 @@ while(fgets(linea, sizeof(linea),fpInterm)){
      char p2[200];
      char p3[200];
 
-    printf("Vamos a ver que trajo la LINEAAAAAAAAAAAAAAAAAAAAAAAAA %s \n",linea);
+    printf("Linea de intermedia %s \n",linea);
 
     sscanf(linea,"%s ( %s ; %s ; %s )",p0,p1,p2,p3);
     strcat(p0,"\0");
