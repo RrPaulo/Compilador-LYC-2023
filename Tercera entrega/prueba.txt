@@ -13,6 +13,11 @@ if (id < var16 || c4==d1)
 }
 else
 {
+		if (id ==j)
+		{
+    			var1 = var2 + 3
+
+		}
 	var18 = 67
 }
 
