@@ -52,30 +52,27 @@
      CONST_STRING = 268,
      LA = 269,
      LC = 270,
-     COMILLA = 271,
-     DOS_PUNTOS = 272,
-     COMA = 273,
-     COMENTARIO_A = 274,
-     COMENTARIO_C = 275,
-     COMENTARIO_I = 276,
-     CICLO = 277,
-     IF = 278,
-     ELSE = 279,
-     INT = 280,
-     FLOAT = 281,
-     STRING = 282,
-     INIT = 283,
-     READ = 284,
-     WRITE = 285,
-     AND = 286,
-     OR = 287,
-     NOT = 288,
-     OP_MEN = 289,
-     OP_MAY = 290,
-     OP_COMP = 291,
-     OP_MEN_IGU = 292,
-     OP_MAY_IGU = 293,
-     FIB = 294
+     DOS_PUNTOS = 271,
+     COMA = 272,
+     CICLO = 273,
+     IF = 274,
+     ELSE = 275,
+     INT = 276,
+     FLOAT = 277,
+     STRING = 278,
+     INIT = 279,
+     READ = 280,
+     WRITE = 281,
+     AND = 282,
+     OR = 283,
+     NOT = 284,
+     OP_MEN = 285,
+     OP_MAY = 286,
+     OP_COMP = 287,
+     OP_MEN_IGU = 288,
+     OP_MAY_IGU = 289,
+     FIB = 290,
+     COMILLA = 291
    };
 #endif
 /* Tokens.  */
@@ -92,30 +89,27 @@
 #define CONST_STRING 268
 #define LA 269
 #define LC 270
-#define COMILLA 271
-#define DOS_PUNTOS 272
-#define COMA 273
-#define COMENTARIO_A 274
-#define COMENTARIO_C 275
-#define COMENTARIO_I 276
-#define CICLO 277
-#define IF 278
-#define ELSE 279
-#define INT 280
-#define FLOAT 281
-#define STRING 282
-#define INIT 283
-#define READ 284
-#define WRITE 285
-#define AND 286
-#define OR 287
-#define NOT 288
-#define OP_MEN 289
-#define OP_MAY 290
-#define OP_COMP 291
-#define OP_MEN_IGU 292
-#define OP_MAY_IGU 293
-#define FIB 294
+#define DOS_PUNTOS 271
+#define COMA 272
+#define CICLO 273
+#define IF 274
+#define ELSE 275
+#define INT 276
+#define FLOAT 277
+#define STRING 278
+#define INIT 279
+#define READ 280
+#define WRITE 281
+#define AND 282
+#define OR 283
+#define NOT 284
+#define OP_MEN 285
+#define OP_MAY 286
+#define OP_COMP 287
+#define OP_MEN_IGU 288
+#define OP_MAY_IGU 289
+#define FIB 290
+#define COMILLA 291
 
 
 
@@ -132,7 +126,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 136 "y.tab.h"
+#line 130 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

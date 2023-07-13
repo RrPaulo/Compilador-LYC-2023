@@ -91,7 +91,7 @@ int desapilarNroTerceto()
 }
 
 
-void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado) // 42 26 -- 22
+void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado) 
 {
     tCola  aux;
     crearCola(&aux);

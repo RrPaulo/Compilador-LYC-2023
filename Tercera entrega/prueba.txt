@@ -26,10 +26,12 @@ a = 87878.6
 a = 99.
 a = .9999
 b = "asldk  fh sjf"
-a = FIB(z)
+a = FIB(15)
+
+
 
 ciclo (not a > b)
 {
-    write("a es mas grande que b")
+    write("a es mas que b")
     a = a + 1
 }

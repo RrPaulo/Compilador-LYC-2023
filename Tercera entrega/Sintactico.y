@@ -74,12 +74,8 @@ void generarAssembler();
 %token <strVal>CONST_STRING
 %token LA
 %token LC
-%token COMILLA
 %token DOS_PUNTOS
 %token COMA
-%token COMENTARIO_A
-%token COMENTARIO_C
-%token COMENTARIO_I
 %token CICLO
 %token IF
 %token ELSE
@@ -98,6 +94,7 @@ void generarAssembler();
 %token OP_MEN_IGU
 %token OP_MAY_IGU
 %token FIB
+%token COMILLA
 %token .
 %%
 start:
@@ -158,11 +155,39 @@ tipo:
       |STRING   {pushStack(&stackDataTypeDecVar,"STRING");};
 
 read:
-          READ PA ID PC {readInd= crearTerceto("READ","_","_",tercetosCreados);}; 
+          READ PA ID PC {
+            char nv[200] ;
+            nv[0] = '_';
+            nv[1] = '\0';
+            strcat(nv,yytext);
+            readInd= crearTerceto("READ",nv,"_",tercetosCreados);}; 
 
 write:
-          WRITE PA ID PC {writeInd=crearTerceto("WRITE","_","_",tercetosCreados);}
-          |WRITE PA CONST_STRING PC{writeInd=crearTerceto("WRITE","_","_",tercetosCreados);}; 
+          WRITE PA ID  {  int i=0 ;
+                             char aux [strlen(yytext)+1];
+                            strcpy(aux,yytext);
+                            aux[0] = '_';
+                            for (i=0; i<= strlen(yytext) ; i++ )
+                            {
+                                if(aux[i] == ' ')
+                                    aux[i]= '_';
+                            }
+                            aux[i-2]='\0';
+                        writeInd=crearTerceto("WRITE",aux,"_",tercetosCreados);}PC
+          |WRITE PA CONST_STRING {
+                            int i=0 ;
+                            char aux [strlen(yytext)+1];
+                            strcpy(aux,yytext);
+                              printf("A VER QUE TIENE AUX %s\n",aux);
+                            aux[0] = '_';
+                            for (i=0; i<= strlen(yytext) ; i++ )
+                            {
+                                if(aux[i] == ' ')
+                                    aux[i]= '_';
+                            }
+                            aux[i-2]='\0';
+                            printf("A VER QUE TIENE AUX %s\n",aux);
+                            writeInd=crearTerceto("WRITE",aux,"_",tercetosCreados);}PC; 
 
 ciclo: 
         CICLO {cicloInd = crearTerceto("InicioCiclo","_","_",tercetosCreados);
@@ -346,7 +371,13 @@ factor:
      	;
 
 fibonacci: 
-      FIB PA CTE PC {printf("Sintactico --> Fibonacci\n");}
+      FIB PA CTE  {
+            
+            char nv[200] ;
+            nv[0] = '_';
+            nv[1] = '\0';
+            strcat(nv,yytext);
+            factInd =  crearTerceto("FIB",nv,"_",tercetosCreados);}PC; 
       | FIB PA ID PC {printf("Sintactico --> Fibonacci\n");};
 
 %%
