@@ -25,6 +25,7 @@ int     sentInd=0,
         asignacionInd=0,
         selecInd=0,
         cicloInd=0,
+        cicloInd2=0,
         longInd=0,
         readInd=0,
         writeInd=0,
@@ -190,42 +191,55 @@ write:
                             writeInd=crearTerceto("WRITE",aux,"_",tercetosCreados);}PC; 
 
 ciclo: 
-        CICLO {cicloInd = crearTerceto("InicioCiclo","_","_",tercetosCreados);
-                            apilarNroTerceto(cicloInd);} 
+        CICLO {             cicloInd = crearTerceto("InicioCiclo","_","_",tercetosCreados);
+                            apilarNroTerceto(cicloInd);
+                          } 
         PA condicion PC LA programa LC {
-                                                int t = desapilarNroTerceto();
-                                                char auxT [LONG_TERCETO]; 
-                                                escribirTercetoActualEnAnterior(tercetosCreados+1,t);
-                                                 t = desapilarNroTerceto();
-                                                sprintf(auxT,"[%d]",t);
-                                                crearTerceto("BI","_",auxT,tercetosCreados);
+                                              
+                                               while(!emptyStack(&pilaComparacion)){
+                                                        char  t [30];
+                                                        popStack(&pilaComparacion,t);
+                                                        printf("FIN de un CICLO %s %d \n", t,tercetosCreados);
+                                                        escribirTercetoActualEnAnterior(tercetosCreados+1,atoi(t),"ETIQ_CICLO");
+                                                 }
+                                                 
+                                                cicloInd2 =crearTerceto("BI","_","InicioCiclo",tercetosCreados);
+                                                char resultado[50]; 
+                                                sprintf(resultado, "ETIQ_CICLO%d", tercetosCreados);
+                                                cicloInd2=crearTerceto(resultado,"_","_",tercetosCreados);
         };
 
 if:
-        IF PA condicion PC LA programa LC {     while(!emptyStack(&pilaComparacion)){
+        IF ETQ PA condicion PC LA programa LC {     if(!emptyStack(&pilaComparacion)){
                                                         char  t [30];
                                                         popStack(&pilaComparacion,t);
                                                         printf("FIN de un IF NORMAL %s\n", t);
-                                                        escribirTercetoActualEnAnterior(tercetosCreados,atoi(t));
+                                                        escribirTercetoActualEnAnterior(tercetosCreados,atoi(t),"ETIQ_IF");
                                                  }
 
                                                 
                                                 }
 
-        | IF PA condicion PC LA programa FT ELSE LA programa LC {
+        | IF ETQ PA condicion PC LA programa FT ELSE LA programa LC {
                                                         while(!emptyStack(&pilaComparacion)){
                                                         char  t [30];
                                                         popStack(&pilaComparacion,t);
                                                         printf("A ver que salida tenemos al FINAL %s\n", t);
-                                                        escribirTercetoActualEnAnterior(tercetosCreados,atoi(t));}
+                                                        escribirTercetoActualEnAnterior(tercetosCreados,atoi(t),"ETIQ_IF");}
+                                                        char resultado[50]; 
+                                                        sprintf(resultado, "ETIQ_IF%d", tercetosCreados);
+                                                        selecInd=crearTerceto(resultado,"_","_",tercetosCreados);
                                                         };
+ETQ: {char resultado[50]; 
+    sprintf(resultado, "ETIQ_IF%d", tercetosCreados);
+    selecInd=crearTerceto(resultado,"_","_",tercetosCreados);};
 FT:
         LC {                    
                         while(!emptyStack(&pilaComparacion)){
                                 char  t [30];
                                 popStack(&pilaComparacion,t);
                                 printf("Vamos a ver como se comporta en el TRUE %s\n", t);
-                                escribirTercetoActualEnAnterior(tercetosCreados+1,atoi(t));}
+                                escribirTercetoActualEnAnterior(tercetosCreados+1,atoi(t),"ETIQ_IF");}
 
                         int t = crearTerceto("BI","_","_" ,tercetosCreados);
                         char tString [10];
@@ -270,7 +284,7 @@ comparacion:
                 comparacionInd=crearTerceto("CMP",exp1,exp2,tercetosCreados);
               
                 int t = crearTerceto(comparador,"_","_" ,tercetosCreados);
-                apilarNroTerceto(t);
+                //apilarNroTerceto(t);
                 printf("A ver t %d\n",t);
                 char tString [10];
                 itoa(t,tString,10);
@@ -577,24 +591,7 @@ while(fgets(linea, sizeof(linea),fpInterm)){
         fprintf(fpAss,"FFREE\n");
     }
 
-    if(strcmp("CMPWH",p1) == 0 ){
-        int i=0;
-        char st[200];
-        tStack auxP;
-        createStack(&auxP);
-        for (i=0 ; i < contWhile ; i++){
-            popStack(&pAss,st); 
-            fprintf(fpAss,"FLD %s\n",st) ;   
-        }
-        char etWhile[200];
-        pushStack(&pWhile,etWhile);
-        fprintf(fpAss,"%s\n",etWhile);
-        fprintf(fpAss,"FLD %s\n",idWhile);
-        fprintf(fpAss,"FCOMPP\n");  
-        fprintf(fpAss,"FSTSW AX\n");
-        fprintf(fpAss,"SAHF\n");
-        
-        }
+    
 //Pasaje de los saltos a assembler
    if(strcmp ("BNE",p1)==0) {
         char et[10];
@@ -644,6 +641,24 @@ while(fgets(linea, sizeof(linea),fpInterm)){
       
         fprintf(fpAss,"JMP %s\n",et);
 
+    }
+    //Pasaje de etiquetas en assembler
+    
+    if(strncmp(p1,"ETIQ_IF",7) == 0 ){
+        fprintf(fpAss,"%s\n",p1);
+    }
+
+    if(strncmp(p1,"ETIQ_ELSE",9) == 0 ){
+        fprintf(fpAss,"%s\n",p1);
+    }
+
+   if(strncmp(p1,"InicioCiclo",11) == 0 ){
+        fprintf(fpAss,"%s\n",p1);
+    }
+
+    if(strncmp(p1,"ETIQ_CICLO",7) == 0 ){
+        fprintf(fpAss,"%s\n",p1);
+        fprintf(fpAss,"FFREE\n");
     }
 
 }

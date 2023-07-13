@@ -14,6 +14,7 @@ FILE * fpIntermedia;
 tCola  colaTercetos;
 tStack pilaNroTerceto;
 int tercetosCreados=1;
+int fueOr=0;
 
 typedef struct
 {
@@ -29,7 +30,7 @@ void escribirTercetosEnIntermedia();
 int crearTerceto(char *c1, char*c2 ,char *c3,int nroT);
 int apilarNroTerceto(int  nroTerceto);
 int desapilarNroTerceto();
-void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado);
+void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado,char * etiqueta);
 
 
 
@@ -83,33 +84,65 @@ int desapilarNroTerceto()
 {   
     char * nroTerceto;
     popStack(&pilaNroTerceto, nroTerceto);
-    //printf("A ver que desapilar %s\n",nroTerceto);
+    printf("A ver que desapilar %s\n",nroTerceto);
     char  subtext [strlen(nroTerceto-2)];
     strncpy(subtext,&nroTerceto[1],strlen(nroTerceto)-1);
-    printf("A ver que tiene subtext %s\n",subtext);
+    printf("A ver que tiene subtext: %s\n",subtext);
     return atoi(subtext);
 }
 
 
-void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado) 
+void escribirTercetoActualEnAnterior(int tercetoAEscribir,int tercetoBuscado,char * etiqueta) //68 59
 {
     tCola  aux;
     crearCola(&aux);
     t_Terceto terceto;
-
+    
     while(!colaVacia(&colaTercetos))
     {
         sacarDeCola(&colaTercetos,&terceto,sizeof(terceto));
-       
-
         if(terceto.numTerceto == tercetoBuscado){
+            int flag = 0;
+            if(fueOr == 1){
+              
+               
+                    if(strcmp ("BNE",terceto.posUno)==0 && flag != 1) {
+                        flag = 1;
+                       strcpy(terceto.posUno, "BEQ\0");                          
+                    }                        
+                    if(strcmp ("BLT",terceto.posUno)==0 && flag != 1) {
+                         flag = 1;
+                        strcpy(terceto.posUno, "BGE\0");        
+                    }
+                    if(strcmp ("BLE",terceto.posUno)==0  && flag != 1) {
+                      strcpy(terceto.posUno, "BGT\0");        
+                     flag = 1;
+                    }
+                    if(strcmp ("BGT",terceto.posUno)==0  && flag != 1) {
+                        strcpy(terceto.posUno, "BLE\0");        
+                    flag = 1;
+                    }       
+                    if(strcmp ("BGE",terceto.posUno)==0  && flag != 1) {
+                       strcpy(terceto.posUno, "BLT\0"); 
+                    flag = 1;                                  
+                    }
+                        
+                    if(strcmp ("BEQ",terceto.posUno)==0  && flag != 1) {
+                        strcpy(terceto.posUno, "BNE\0");
+                    flag = 1;                                
+                    }
+
+            }
+
                 char nueComponente [LONG_TERCETO];
-                sprintf( nueComponente, "[%d]",tercetoAEscribir);
+                sprintf( nueComponente, "%s%d",etiqueta,tercetoAEscribir);
+
                 strcpy(terceto.posTres, nueComponente);
         }
         ponerEnCola(&aux,&terceto,sizeof(terceto));
     }
     
-     colaTercetos=aux;
-
+    colaTercetos=aux;
+    printf("Entro a escribirTAE3  %d\n",tercetoBuscado);
 }
+

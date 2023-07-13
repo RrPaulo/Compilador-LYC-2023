@@ -29,7 +29,6 @@ b = "asldk  fh sjf"
 a = FIB(15)
 
 
-
 ciclo (not a > b)
 {
     write("a es mas que b")
